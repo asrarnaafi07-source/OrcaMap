@@ -1,0 +1,1434 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ORCA Simulation Platform — simulasi teknis, heat cascade, ekonomi, risiko, dan dampak komunitas panas bumi Ungaran.">
+<title>ORCA | Geothermal Simulation Platform</title>
+<style>
+:root{--green:#163b32;--green2:#245846;--cream:#f6f3eb;--paper:#fff;--orange:#c46d22;--line:#dfe5df;--text:#24342e;--muted:#64746d;--shadow:0 10px 28px rgba(22,59,50,.08);--red:#a43b32;--blue:#356b8c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--cream);color:var(--text);line-height:1.55}
+button,input,select{font:inherit}button{cursor:pointer}.topbar{position:sticky;top:0;z-index:1000;background:rgba(22,59,50,.98);color:#fff;box-shadow:0 3px 14px #10251e22}
+.nav{max-width:1400px;margin:auto;padding:11px 22px;display:flex;align-items:center;gap:20px}.brand{font-size:17px;font-weight:950;letter-spacing:.1em;white-space:nowrap}.navlinks{display:flex;gap:5px;flex-wrap:wrap;margin-left:auto}.navlinks button{border:0;background:transparent;color:#e7eee9;padding:8px 10px;border-radius:8px;font-size:11px;font-weight:700}.navlinks button:hover,.navlinks button.active{background:#ffffff20;color:white}
+main{max-width:1240px;margin:auto;padding:30px 22px 70px}.page{display:none}.page.active{display:block}.hero{background:linear-gradient(125deg,#163b32 0%,#245846 62%,#bd702f 145%);color:#fff;border-radius:22px;padding:42px 42px;box-shadow:var(--shadow)}.eyebrow,.tag{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:900}.eyebrow{opacity:.75}.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.02;margin:10px 0 14px;letter-spacing:-.035em}.hero p{max-width:850px;color:#eff4f0;font-size:16px;margin:0}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.btn{border:1px solid var(--green);border-radius:9px;background:var(--green);color:#fff;padding:10px 14px;font-size:12px;font-weight:800}.btn.light{background:#fff;color:var(--green);border-color:#fff}.btn.ghost{background:transparent;border-color:#ffffff80;color:#fff}.btn:hover{filter:brightness(1.08)}
+.section{margin-top:32px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:14px}.section h2{font-size:25px;color:var(--green);margin:0 0 7px}.section-head p,.muted{color:var(--muted);font-size:13px;margin:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:0 5px 18px #163b3209}.card h3{color:var(--green);font-size:16px;margin:0 0 8px}.card p{font-size:13px;color:var(--muted);margin:5px 0}.metric{font-size:29px;font-weight:950;color:var(--green);letter-spacing:-.03em}.metric small{font-size:12px;font-weight:700;letter-spacing:0}.tag{display:inline-block;background:#edf4ef;color:var(--green);padding:5px 8px;border-radius:20px;letter-spacing:.06em}
+label{display:block;font-size:12px;font-weight:800;color:#3b5147;margin-bottom:6px}.field{margin-bottom:14px}.field input,.field select{width:100%;padding:10px 11px;border:1px solid #cfdad2;border-radius:9px;background:#fff;color:var(--text);outline:none}.field input:focus,.field select:focus{border-color:#3e8064;box-shadow:0 0 0 3px #3e80641c}.field .hint{font-size:10px;color:var(--muted);margin-top:4px}.fields{display:grid;grid-template-columns:repeat(2,1fr);gap:0 14px}.range-row{display:flex;justify-content:space-between;gap:12px;align-items:center}.range-row output{font-weight:900;color:var(--green);font-size:12px}.range{width:100%;accent-color:var(--green)}
+.result{background:#edf4ef;border:1px solid #d7e5da;border-radius:12px;padding:15px}.result strong{color:var(--green)}.result .big{font-size:28px;font-weight:950;color:var(--green)}.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}.result-grid>div{background:#fff;border:1px solid #e2e9e3;border-radius:9px;padding:10px}.result-grid b{display:block;color:var(--green);font-size:17px}.result-grid span{font-size:10px;color:var(--muted)}
+.note{border-left:3px solid var(--orange);padding:10px 13px;background:#fff8ef;border-radius:0 9px 9px 0;color:#71512f;font-size:12px}.flow{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}.flow .step{flex:1;min-width:130px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}.flow .step b{color:var(--green);display:block}.arrow{align-self:center;color:var(--orange);font-weight:900}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-size:12px}th{background:#edf4ef;color:var(--green)}tr:last-child td{border-bottom:0}
+.chart-wrap{background:#fff;border:1px solid var(--line);border-radius:13px;padding:14px;min-height:220px}.chart-wrap canvas{width:100%;height:220px;display:block}.barline{height:12px;background:#e7eee9;border-radius:20px;overflow:hidden}.barline span{height:100%;display:block;background:linear-gradient(90deg,#245846,#c46d22);border-radius:20px}
+.map-frame{width:100%;height:690px;border:1px solid var(--line);border-radius:15px;background:white}.footer{max-width:1240px;margin:auto;padding:0 22px 28px;color:#7b8982;font-size:11px}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}.tabs button{border:1px solid var(--line);background:#fff;color:var(--green);padding:8px 12px;border-radius:8px;font-size:11px;font-weight:800}.tabs button.active{background:var(--green);color:#fff}
+.small{font-size:11px;color:var(--muted)}.pill{display:inline-block;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:900;background:#f1f3ef;color:#53645a}.positive{color:#247047!important}.negative{color:var(--red)!important}
+@media(max-width:850px){.nav{align-items:flex-start;flex-direction:column;gap:8px}.navlinks{margin:0}.grid,.grid2{grid-template-columns:1fr}.grid4{grid-template-columns:repeat(2,1fr)}.hero{padding:30px 24px}.fields{grid-template-columns:1fr}.map-frame{height:620px}main{padding:20px 13px 50px}}
+@media(max-width:480px){.grid4{grid-template-columns:1fr 1fr}.result-grid{grid-template-columns:1fr 1fr}.navlinks button{padding:7px 8px}}
+</style>
+</head>
+<body>
+<header class="topbar"><nav class="nav">
+  <div class="brand">ORCA <span style="font-weight:500;font-size:9px;letter-spacing:.05em;opacity:.75">SIMULATION PLATFORM</span></div>
+  <div class="navlinks">
+    <button class="active" data-page="home">Home</button><button data-page="spatial">Spatial</button><button data-page="orc">ORC Simulator</button><button data-page="cascade">Heat Cascade</button><button data-page="economic">Economic</button><button data-page="risk">Risk / Monte Carlo</button><button data-page="community">Community</button><button data-page="about">Methodology</button>
+  </div>
+</nav></header>
+<main>
+<section class="page active" id="home">
+ <div class="hero"><div class="eyebrow">Kreasi Festival 2026 • Energy & Food Resilience</div><h1>ORCA</h1><p><b>Organic Rankine Cycle Application</b> dan pemanfaatan bertingkat panas bumi Ungaran. Platform simulasi interaktif untuk menguji skenario teknis, aliran panas, screening ekonomi, dan ketidakpastian sebelum studi kelayakan rinci.</p><div class="hero-actions"><button class="btn light" data-go="orc">Mulai simulasi ORC</button><button class="btn ghost" data-go="spatial">Buka peta interaktif</button></div></div>
+ <div class="section"><div class="section-head"><div><h2>ORCA dalam satu platform</h2><p>Ubah parameter dan lihat konsekuensinya secara langsung di browser.</p></div><span class="tag">Browser-based • No login</span></div>
+  <div class="grid">
+   <div class="card"><span class="tag">01 • Spatial</span><h3>Panas dan pengguna</h3><p>Peta mempertahankan lokasi Gedong Songo, 16 kelompok tani kopi Jambu, dan titik wilayah proksi dari dashboard awal.</p></div>
+   <div class="card"><span class="tag">02 • Technology</span><h3>ORC scenario engine</h3><p>Bandingkan bottoming cycle dan ORC sebagai pembangkit utama berdasarkan debit, temperatur, efisiensi, serta beban parasitik.</p></div>
+   <div class="card"><span class="tag">03 • Heat cascade</span><h3>Pemanfaatan sisa panas</h3><p>Uji alokasi energi untuk pengeringan kopi dan cold chain sebelum reinjeksi.</p></div>
+   <div class="card"><span class="tag">04 • Economic</span><h3>Screening keekonomian</h3><p>Hitung NPV, IRR indikatif, payback, dan arus kas berdasarkan asumsi yang dapat diubah.</p></div>
+   <div class="card"><span class="tag">05 • Risk</span><h3>Ketidakpastian</h3><p>Jalankan Monte Carlo 1.000 iterasi untuk melihat sebaran NPV dari rentang input.</p></div>
+   <div class="card"><span class="tag">06 • Community</span><h3>Manfaat lokal</h3><p>Menempatkan pemuda, perguruan tinggi, BUMDes/koperasi, dan warga sebagai bagian dari desain.</p></div>
+  </div>
+ </div>
+ <div class="section grid2">
+  <div class="card"><h3>Angka konteks dari dashboard awal</h3><div class="grid4"><div><div class="metric">23,2</div><div class="small">GW potensi Indonesia*</div></div><div><div class="metric">110–270</div><div class="small">°C estimasi Ungaran*</div></div><div><div class="metric">20–55</div><div class="small">MW konteks kapasitas*</div></div><div><div class="metric">16</div><div class="small">kelompok tani kopi</div></div></div><p class="small">*Angka sebagaimana dicantumkan dalam materi ORCA awal; bukan hasil verifikasi atau jaminan sumber daya.</p></div>
+  <div class="card"><h3>Alur keputusan ORCA</h3><div class="flow"><div class="step"><b>Uji sumur</b><span class="small">Suhu, debit, kimia</span></div><div class="arrow">→</div><div class="step"><b>Neraca panas</b><span class="small">Q = ṁ Cp ΔT</span></div><div class="arrow">→</div><div class="step"><b>ORC & cascade</b><span class="small">Konfigurasi dan alokasi</span></div><div class="arrow">→</div><div class="step"><b>Evaluasi</b><span class="small">Ekonomi dan risiko</span></div></div></div>
+ </div>
+</section>
+
+<section class="page" id="spatial">
+ <div class="section-head"><div><h2>Spatial dashboard</h2><p>Peta interaktif asli dari dashboard ORCA. Perlu koneksi internet untuk memuat Leaflet dan basemap.</p></div><span class="tag">Gedong Songo • Jambu • Bandungan</span></div>
+ <iframe class="map-frame" title="Peta spasial ORCA" loading="lazy" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+:root{
+  --green:#163b32; --green2:#245846; --cream:#f6f3eb; --paper:#fff;
+  --orange:#c46d22; --line:#dfe5df; --text:#24342e; --muted:#64746d;
+  --shadow:0 12px 34px rgba(22,59,50,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--cream);color:var(--text);line-height:1.6}
+a{text-decoration:none;color:inherit}
+.topbar{position:sticky;top:0;z-index:5000;background:rgba(22,59,50,.97);color:#fff;border-bottom:1px solid rgba(255,255,255,.12)}
+.nav{max-width:1240px;margin:auto;display:flex;align-items:center;gap:18px;padding:12px 20px}
+.brand{font-weight:900;letter-spacing:.08em;font-size:15px;white-space:nowrap}
+.navlinks{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.navlinks a{font-size:11px;color:rgba(255,255,255,.82);padding:7px 9px;border-radius:8px}
+.navlinks a:hover,.navlinks a.active{background:rgba(255,255,255,.12);color:#fff}
+.wrap{max-width:1120px;margin:auto;padding:58px 24px 80px}
+.hero{background:linear-gradient(135deg,#163b32 0%,#245846 58%,#c46d22 150%);color:#fff;border-radius:22px;padding:56px 48px;box-shadow:var(--shadow)}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.75;font-weight:800}
+h1{font-size:clamp(30px,5vw,58px);line-height:1.02;margin:12px 0 16px;letter-spacing:-.03em}
+h2{font-size:30px;line-height:1.1;margin:0 0 14px;color:var(--green)}
+h3{font-size:18px;color:var(--green);margin-bottom:8px}
+.lead{font-size:17px;max-width:820px;color:rgba(255,255,255,.88)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-block;padding:11px 16px;border-radius:10px;background:#fff;color:var(--green);font-weight:800;font-size:12px}
+.btn.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 8px 24px rgba(22,59,50,.05)}
+.card p{margin:6px 0;color:var(--muted);font-size:14px}
+.num{font-size:32px;font-weight:900;color:var(--green)}
+.tag{display:inline-block;background:#edf4ef;color:var(--green);font-size:10px;font-weight:900;letter-spacing:.06em;padding:5px 8px;border-radius:999px;text-transform:uppercase}
+.section{margin-top:46px}
+.note{font-size:12px;color:var(--muted)}
+.flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;margin-top:20px}
+.flow .step{flex:1;min-width:145px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+.flow .arrow{display:flex;align-items:center;color:var(--orange);font-weight:900}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}
+th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);font-size:12px}
+th{background:#edf4ef;color:var(--green)}
+footer{max-width:1120px;margin:0 auto;padding:0 24px 40px;color:#7a8882;font-size:11px}
+@media(max-width:820px){.grid,.grid2{grid-template-columns:1fr}.nav{align-items:flex-start;flex-direction:column}.navlinks{margin-left:0}.hero{padding:34px 25px}.wrap{padding-top:35px}}
+
+.spatial-nav{position:fixed;top:0;left:0;right:0;z-index:10000}
+.spatial-nav .nav{max-width:none}
+.spatial-spacer{height:52px}
+&lt;/style&gt;
+    
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;Peta interaktif analisis spasial calon pengguna panas bumi ORCA di kawasan Gedong Songo, Jambu, Bandungan, Sumowono, dan Kopeng.&quot; /&gt;
+    &lt;meta name=&quot;theme-color&quot; content=&quot;#163b32&quot; /&gt;
+    &lt;title&gt;ORCA | Spatial Dashboard&lt;/title&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+    
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_b0fa60a674d0e5e8a7166a7dcb2a619b {
+                    position: relative;
+                    width: 100%;
+                    height: calc(100vh - 76px);
+                    left: 0;
+                    top: 0;
+                }
+                .site-header{height:76px;box-sizing:border-box;padding:10px 18px;background:#163b32;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:Arial,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.18);position:relative;z-index:1000}
+                .site-header strong{display:block;font-size:16px;letter-spacing:.04em}
+                .site-header span{display:block;font-size:11px;opacity:.86;margin-top:3px}
+                .site-tag{font-size:10px!important;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(255,255,255,.45);padding:6px 9px;border-radius:20px;white-space:nowrap}
+                @media(max-width:520px){.site-header{height:72px;padding:8px 12px}.site-header strong{font-size:13px}.site-header span{font-size:10px}.site-tag{font-size:9px!important}#map_b0fa60a674d0e5e8a7166a7dcb2a619b{height:calc(100vh - 72px)}}
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;/*
+ * Glyphicons Halflings -- the icon font used by folium&#x27;s default Awesome Markers
+ * (Icon(prefix=&quot;glyphicon&quot;)). Extracted from Bootstrap 3&#x27;s glyphicon rules only.
+ *
+ * folium previously loaded netdna&#x27;s bootstrap-glyphicons.css, which despite its
+ * name ships a full Bootstrap-3 base stylesheet (normalize reset + global `body`
+ * rules) that leaked onto the host page (GH-1820). This file provides just the
+ * @font-face and .glyphicon/.glyphicon-* rules needed for the markers, with no
+ * page-wide side effects. Font files are served from jsDelivr.
+ */
+@font-face{font-family:&#x27;Glyphicons Halflings&#x27;;src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot&#x27;);src:url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix&#x27;) format(&#x27;embedded-opentype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.woff&#x27;) format(&#x27;woff&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.ttf&#x27;) format(&#x27;truetype&#x27;),url(&#x27;https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular&#x27;) format(&#x27;svg&#x27;);}.glyphicon{position:relative;top:1px;display:inline-block;font-family:&#x27;Glyphicons Halflings&#x27;;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;}
+.glyphicon-asterisk:before{content:&quot;\2a&quot;;}
+.glyphicon-plus:before{content:&quot;\2b&quot;;}
+.glyphicon-euro:before{content:&quot;\20ac&quot;;}
+.glyphicon-minus:before{content:&quot;\2212&quot;;}
+.glyphicon-cloud:before{content:&quot;\2601&quot;;}
+.glyphicon-envelope:before{content:&quot;\2709&quot;;}
+.glyphicon-pencil:before{content:&quot;\270f&quot;;}
+.glyphicon-glass:before{content:&quot;\e001&quot;;}
+.glyphicon-music:before{content:&quot;\e002&quot;;}
+.glyphicon-search:before{content:&quot;\e003&quot;;}
+.glyphicon-heart:before{content:&quot;\e005&quot;;}
+.glyphicon-star:before{content:&quot;\e006&quot;;}
+.glyphicon-star-empty:before{content:&quot;\e007&quot;;}
+.glyphicon-user:before{content:&quot;\e008&quot;;}
+.glyphicon-film:before{content:&quot;\e009&quot;;}
+.glyphicon-th-large:before{content:&quot;\e010&quot;;}
+.glyphicon-th:before{content:&quot;\e011&quot;;}
+.glyphicon-th-list:before{content:&quot;\e012&quot;;}
+.glyphicon-ok:before{content:&quot;\e013&quot;;}
+.glyphicon-remove:before{content:&quot;\e014&quot;;}
+.glyphicon-zoom-in:before{content:&quot;\e015&quot;;}
+.glyphicon-zoom-out:before{content:&quot;\e016&quot;;}
+.glyphicon-off:before{content:&quot;\e017&quot;;}
+.glyphicon-signal:before{content:&quot;\e018&quot;;}
+.glyphicon-cog:before{content:&quot;\e019&quot;;}
+.glyphicon-trash:before{content:&quot;\e020&quot;;}
+.glyphicon-home:before{content:&quot;\e021&quot;;}
+.glyphicon-file:before{content:&quot;\e022&quot;;}
+.glyphicon-time:before{content:&quot;\e023&quot;;}
+.glyphicon-road:before{content:&quot;\e024&quot;;}
+.glyphicon-download-alt:before{content:&quot;\e025&quot;;}
+.glyphicon-download:before{content:&quot;\e026&quot;;}
+.glyphicon-upload:before{content:&quot;\e027&quot;;}
+.glyphicon-inbox:before{content:&quot;\e028&quot;;}
+.glyphicon-play-circle:before{content:&quot;\e029&quot;;}
+.glyphicon-repeat:before{content:&quot;\e030&quot;;}
+.glyphicon-refresh:before{content:&quot;\e031&quot;;}
+.glyphicon-list-alt:before{content:&quot;\e032&quot;;}
+.glyphicon-flag:before{content:&quot;\e034&quot;;}
+.glyphicon-headphones:before{content:&quot;\e035&quot;;}
+.glyphicon-volume-off:before{content:&quot;\e036&quot;;}
+.glyphicon-volume-down:before{content:&quot;\e037&quot;;}
+.glyphicon-volume-up:before{content:&quot;\e038&quot;;}
+.glyphicon-qrcode:before{content:&quot;\e039&quot;;}
+.glyphicon-barcode:before{content:&quot;\e040&quot;;}
+.glyphicon-tag:before{content:&quot;\e041&quot;;}
+.glyphicon-tags:before{content:&quot;\e042&quot;;}
+.glyphicon-book:before{content:&quot;\e043&quot;;}
+.glyphicon-print:before{content:&quot;\e045&quot;;}
+.glyphicon-font:before{content:&quot;\e047&quot;;}
+.glyphicon-bold:before{content:&quot;\e048&quot;;}
+.glyphicon-italic:before{content:&quot;\e049&quot;;}
+.glyphicon-text-height:before{content:&quot;\e050&quot;;}
+.glyphicon-text-width:before{content:&quot;\e051&quot;;}
+.glyphicon-align-left:before{content:&quot;\e052&quot;;}
+.glyphicon-align-center:before{content:&quot;\e053&quot;;}
+.glyphicon-align-right:before{content:&quot;\e054&quot;;}
+.glyphicon-align-justify:before{content:&quot;\e055&quot;;}
+.glyphicon-list:before{content:&quot;\e056&quot;;}
+.glyphicon-indent-left:before{content:&quot;\e057&quot;;}
+.glyphicon-indent-right:before{content:&quot;\e058&quot;;}
+.glyphicon-facetime-video:before{content:&quot;\e059&quot;;}
+.glyphicon-picture:before{content:&quot;\e060&quot;;}
+.glyphicon-map-marker:before{content:&quot;\e062&quot;;}
+.glyphicon-adjust:before{content:&quot;\e063&quot;;}
+.glyphicon-tint:before{content:&quot;\e064&quot;;}
+.glyphicon-edit:before{content:&quot;\e065&quot;;}
+.glyphicon-share:before{content:&quot;\e066&quot;;}
+.glyphicon-check:before{content:&quot;\e067&quot;;}
+.glyphicon-move:before{content:&quot;\e068&quot;;}
+.glyphicon-step-backward:before{content:&quot;\e069&quot;;}
+.glyphicon-fast-backward:before{content:&quot;\e070&quot;;}
+.glyphicon-backward:before{content:&quot;\e071&quot;;}
+.glyphicon-play:before{content:&quot;\e072&quot;;}
+.glyphicon-pause:before{content:&quot;\e073&quot;;}
+.glyphicon-stop:before{content:&quot;\e074&quot;;}
+.glyphicon-forward:before{content:&quot;\e075&quot;;}
+.glyphicon-fast-forward:before{content:&quot;\e076&quot;;}
+.glyphicon-step-forward:before{content:&quot;\e077&quot;;}
+.glyphicon-eject:before{content:&quot;\e078&quot;;}
+.glyphicon-chevron-left:before{content:&quot;\e079&quot;;}
+.glyphicon-chevron-right:before{content:&quot;\e080&quot;;}
+.glyphicon-plus-sign:before{content:&quot;\e081&quot;;}
+.glyphicon-minus-sign:before{content:&quot;\e082&quot;;}
+.glyphicon-remove-sign:before{content:&quot;\e083&quot;;}
+.glyphicon-ok-sign:before{content:&quot;\e084&quot;;}
+.glyphicon-question-sign:before{content:&quot;\e085&quot;;}
+.glyphicon-info-sign:before{content:&quot;\e086&quot;;}
+.glyphicon-screenshot:before{content:&quot;\e087&quot;;}
+.glyphicon-remove-circle:before{content:&quot;\e088&quot;;}
+.glyphicon-ok-circle:before{content:&quot;\e089&quot;;}
+.glyphicon-ban-circle:before{content:&quot;\e090&quot;;}
+.glyphicon-arrow-left:before{content:&quot;\e091&quot;;}
+.glyphicon-arrow-right:before{content:&quot;\e092&quot;;}
+.glyphicon-arrow-up:before{content:&quot;\e093&quot;;}
+.glyphicon-arrow-down:before{content:&quot;\e094&quot;;}
+.glyphicon-share-alt:before{content:&quot;\e095&quot;;}
+.glyphicon-resize-full:before{content:&quot;\e096&quot;;}
+.glyphicon-resize-small:before{content:&quot;\e097&quot;;}
+.glyphicon-exclamation-sign:before{content:&quot;\e101&quot;;}
+.glyphicon-gift:before{content:&quot;\e102&quot;;}
+.glyphicon-leaf:before{content:&quot;\e103&quot;;}
+.glyphicon-eye-open:before{content:&quot;\e105&quot;;}
+.glyphicon-eye-close:before{content:&quot;\e106&quot;;}
+.glyphicon-warning-sign:before{content:&quot;\e107&quot;;}
+.glyphicon-plane:before{content:&quot;\e108&quot;;}
+.glyphicon-random:before{content:&quot;\e110&quot;;}
+.glyphicon-comment:before{content:&quot;\e111&quot;;}
+.glyphicon-magnet:before{content:&quot;\e112&quot;;}
+.glyphicon-chevron-up:before{content:&quot;\e113&quot;;}
+.glyphicon-chevron-down:before{content:&quot;\e114&quot;;}
+.glyphicon-retweet:before{content:&quot;\e115&quot;;}
+.glyphicon-shopping-cart:before{content:&quot;\e116&quot;;}
+.glyphicon-folder-close:before{content:&quot;\e117&quot;;}
+.glyphicon-folder-open:before{content:&quot;\e118&quot;;}
+.glyphicon-resize-vertical:before{content:&quot;\e119&quot;;}
+.glyphicon-resize-horizontal:before{content:&quot;\e120&quot;;}
+.glyphicon-hdd:before{content:&quot;\e121&quot;;}
+.glyphicon-bullhorn:before{content:&quot;\e122&quot;;}
+.glyphicon-certificate:before{content:&quot;\e124&quot;;}
+.glyphicon-thumbs-up:before{content:&quot;\e125&quot;;}
+.glyphicon-thumbs-down:before{content:&quot;\e126&quot;;}
+.glyphicon-hand-right:before{content:&quot;\e127&quot;;}
+.glyphicon-hand-left:before{content:&quot;\e128&quot;;}
+.glyphicon-hand-up:before{content:&quot;\e129&quot;;}
+.glyphicon-hand-down:before{content:&quot;\e130&quot;;}
+.glyphicon-circle-arrow-right:before{content:&quot;\e131&quot;;}
+.glyphicon-circle-arrow-left:before{content:&quot;\e132&quot;;}
+.glyphicon-circle-arrow-up:before{content:&quot;\e133&quot;;}
+.glyphicon-circle-arrow-down:before{content:&quot;\e134&quot;;}
+.glyphicon-globe:before{content:&quot;\e135&quot;;}
+.glyphicon-tasks:before{content:&quot;\e137&quot;;}
+.glyphicon-filter:before{content:&quot;\e138&quot;;}
+.glyphicon-fullscreen:before{content:&quot;\e140&quot;;}
+.glyphicon-dashboard:before{content:&quot;\e141&quot;;}
+.glyphicon-heart-empty:before{content:&quot;\e143&quot;;}
+.glyphicon-link:before{content:&quot;\e144&quot;;}
+.glyphicon-phone:before{content:&quot;\e145&quot;;}
+.glyphicon-usd:before{content:&quot;\e148&quot;;}
+.glyphicon-gbp:before{content:&quot;\e149&quot;;}
+.glyphicon-sort:before{content:&quot;\e150&quot;;}
+.glyphicon-sort-by-alphabet:before{content:&quot;\e151&quot;;}
+.glyphicon-sort-by-alphabet-alt:before{content:&quot;\e152&quot;;}
+.glyphicon-sort-by-order:before{content:&quot;\e153&quot;;}
+.glyphicon-sort-by-order-alt:before{content:&quot;\e154&quot;;}
+.glyphicon-sort-by-attributes:before{content:&quot;\e155&quot;;}
+.glyphicon-sort-by-attributes-alt:before{content:&quot;\e156&quot;;}
+.glyphicon-unchecked:before{content:&quot;\e157&quot;;}
+.glyphicon-expand:before{content:&quot;\e158&quot;;}
+.glyphicon-collapse-down:before{content:&quot;\e159&quot;;}
+.glyphicon-collapse-up:before{content:&quot;\e160&quot;;}
+.glyphicon-log-in:before{content:&quot;\e161&quot;;}
+.glyphicon-flash:before{content:&quot;\e162&quot;;}
+.glyphicon-log-out:before{content:&quot;\e163&quot;;}
+.glyphicon-new-window:before{content:&quot;\e164&quot;;}
+.glyphicon-record:before{content:&quot;\e165&quot;;}
+.glyphicon-save:before{content:&quot;\e166&quot;;}
+.glyphicon-open:before{content:&quot;\e167&quot;;}
+.glyphicon-saved:before{content:&quot;\e168&quot;;}
+.glyphicon-import:before{content:&quot;\e169&quot;;}
+.glyphicon-export:before{content:&quot;\e170&quot;;}
+.glyphicon-send:before{content:&quot;\e171&quot;;}
+.glyphicon-floppy-disk:before{content:&quot;\e172&quot;;}
+.glyphicon-floppy-saved:before{content:&quot;\e173&quot;;}
+.glyphicon-floppy-remove:before{content:&quot;\e174&quot;;}
+.glyphicon-floppy-save:before{content:&quot;\e175&quot;;}
+.glyphicon-floppy-open:before{content:&quot;\e176&quot;;}
+.glyphicon-credit-card:before{content:&quot;\e177&quot;;}
+.glyphicon-transfer:before{content:&quot;\e178&quot;;}
+.glyphicon-cutlery:before{content:&quot;\e179&quot;;}
+.glyphicon-header:before{content:&quot;\e180&quot;;}
+.glyphicon-compressed:before{content:&quot;\e181&quot;;}
+.glyphicon-earphone:before{content:&quot;\e182&quot;;}
+.glyphicon-phone-alt:before{content:&quot;\e183&quot;;}
+.glyphicon-tower:before{content:&quot;\e184&quot;;}
+.glyphicon-stats:before{content:&quot;\e185&quot;;}
+.glyphicon-sd-video:before{content:&quot;\e186&quot;;}
+.glyphicon-hd-video:before{content:&quot;\e187&quot;;}
+.glyphicon-subtitles:before{content:&quot;\e188&quot;;}
+.glyphicon-sound-stereo:before{content:&quot;\e189&quot;;}
+.glyphicon-sound-dolby:before{content:&quot;\e190&quot;;}
+.glyphicon-sound-5-1:before{content:&quot;\e191&quot;;}
+.glyphicon-sound-6-1:before{content:&quot;\e192&quot;;}
+.glyphicon-sound-7-1:before{content:&quot;\e193&quot;;}
+.glyphicon-copyright-mark:before{content:&quot;\e194&quot;;}
+.glyphicon-registration-mark:before{content:&quot;\e195&quot;;}
+.glyphicon-cloud-download:before{content:&quot;\e197&quot;;}
+.glyphicon-cloud-upload:before{content:&quot;\e198&quot;;}
+.glyphicon-tree-conifer:before{content:&quot;\e199&quot;;}
+.glyphicon-tree-deciduous:before{content:&quot;\e200&quot;;}
+.glyphicon-briefcase:before{content:&quot;\1f4bc&quot;;}
+.glyphicon-calendar:before{content:&quot;\1f4c5&quot;;}
+.glyphicon-pushpin:before{content:&quot;\1f4cc&quot;;}
+.glyphicon-paperclip:before{content:&quot;\1f4ce&quot;;}
+.glyphicon-camera:before{content:&quot;\1f4f7&quot;;}
+.glyphicon-lock:before{content:&quot;\1f512&quot;;}
+.glyphicon-bell:before{content:&quot;\1f514&quot;;}
+.glyphicon-bookmark:before{content:&quot;\1f516&quot;;}
+.glyphicon-fire:before{content:&quot;\1f525&quot;;}
+.glyphicon-wrench:before{content:&quot;\1f527&quot;;}
+&lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+        
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css&quot;/&gt;
+
+&lt;style&gt;
+:root{--orca:#163b32;--orca2:#245747;--ink:#172923;--muted:#6b7b74;--line:#dce6e0;--panel:#fff}
+.site-header{background:linear-gradient(105deg,#102f29,#245747);height:78px;padding:10px 22px}
+.site-header strong{font-size:17px;letter-spacing:.06em}.site-header span{font-size:11px}
+.orca-dashboard{transition:transform .28s ease,opacity .2s ease;position:fixed;z-index:1200;left:14px;top:94px;width:330px;max-height:calc(100vh - 112px);overflow:auto;background:rgba(255,255,255,.97);border:1px solid rgba(22,59,50,.18);border-radius:14px;box-shadow:0 12px 34px rgba(14,35,27,.22);font:13px/1.45 Arial,sans-serif;color:var(--ink);backdrop-filter:blur(8px)}
+.od-head{padding:15px 16px 12px;background:#f3f7f4;border-bottom:1px solid var(--line);border-radius:14px 14px 0 0}.od-eyebrow{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#547366;font-weight:700}.od-title{font-size:17px;font-weight:800;margin-top:3px}.od-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.od-section{padding:12px 15px;border-bottom:1px solid #edf1ee}.od-section:last-child{border-bottom:0}.od-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#62766c;font-weight:700;margin-bottom:8px}
+.od-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.od-stat{background:#f6f9f7;border:1px solid #e7eee9;border-radius:9px;padding:9px}.od-stat b{display:block;font-size:19px;line-height:1.2;color:var(--orca)}.od-stat span{font-size:10px;color:var(--muted)}
+.od-search{width:100%;border:1px solid #ccd9d1;border-radius:8px;padding:9px 10px;font-size:12px;outline:none}.od-search:focus{border-color:#397b60;box-shadow:0 0 0 3px #397b601a}
+.od-checks{display:grid;gap:8px}.od-check{display:flex;align-items:center;gap:8px;font-size:12px}.od-check input{accent-color:var(--orca);width:14px;height:14px}.od-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.od-btn{border:1px solid #cbd9d1;border-radius:8px;background:#fff;color:var(--orca);font-weight:700;padding:8px 10px;font-size:11px;cursor:pointer}.od-btn.primary{background:var(--orca);border-color:var(--orca);color:#fff}.od-btn:hover{filter:brightness(.96)}.od-row{display:flex;gap:7px;flex-wrap:wrap}.od-note{font-size:10px;color:#728078;margin-top:7px}.od-result{background:#eef5f0;border-radius:8px;padding:9px;margin-top:8px;font-size:11px;color:#254c3d;min-height:34px}
+.leaflet-popup-content{font-family:Arial,sans-serif;min-width:190px}.orca-pop-title{font-weight:800;color:#163b32;font-size:13px;margin-bottom:7px}.orca-pop-row{font-size:11px;margin:4px 0;color:#40554b}.orca-pop-tag{display:inline-block;padding:2px 7px;border-radius:20px;background:#edf4ef;color:#315c48;font-size:10px;font-weight:700}
+@media(max-width:700px){.orca-dashboard{left:8px;top:82px;width:min(310px,calc(100vw - 16px));max-height:52vh}.site-header{height:70px;padding:8px 12px}.site-header strong{font-size:13px}.site-header span{font-size:10px}}
+/* Collapsible legend */
+.legend-control{position:fixed;bottom:24px;left:12px;z-index:9999;font:12px/1.5 Arial,sans-serif}
+.legend-toggle{display:flex;align-items:center;justify-content:space-between;gap:34px;min-width:118px;padding:8px 11px;border:1px solid #cbd9d1;border-radius:8px;background:rgba(255,255,255,.96);color:#163b32;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.legend-toggle:hover{background:#f5f8f6}
+.legend-content{display:none;margin-bottom:6px;padding:10px 12px;min-width:245px;background:rgba(255,255,255,.96);border:1px solid #cbd9d1;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.legend-content.active{display:block}
+.legend-content div{margin:5px 0}
+.legend-content small{display:block;margin-top:8px;color:#68776f}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.legend-line{display:inline-block;width:16px;margin-right:7px;vertical-align:middle}
+.dashed-red{border-top:2px dashed red}
+.yellow-line{border-top:2px solid yellow}
+.candidate{background:white;border:1px solid #555}
+@media(max-width:700px){.legend-control{bottom:16px;left:8px}.legend-content{min-width:min(245px,calc(100vw - 24px))}}
+
+/* ORCA v3 — collapsible dashboard */
+.od-head{position:relative;padding-right:52px}
+.od-toggle{position:absolute;right:12px;top:12px;width:34px;height:34px;border:1px solid #cbd9d1;border-radius:9px;background:#fff;color:var(--orca);cursor:pointer;font-weight:800}
+.od-toggle:hover{background:#edf5f0}
+.od-section{transition:max-height .25s ease}
+.orca-dashboard.is-collapsed{width:48px;max-height:none;overflow:hidden;background:rgba(255,255,255,.96)}
+.orca-dashboard.is-collapsed .od-head{padding:8px 6px;height:46px;border-radius:14px;border-bottom:0}
+.orca-dashboard.is-collapsed .od-head &gt; div:not(.od-eyebrow),
+.orca-dashboard.is-collapsed .od-head .od-eyebrow{display:none}
+.orca-dashboard.is-collapsed .od-toggle{position:static;width:36px;height:30px;display:block;margin:auto}
+.orca-dashboard.is-collapsed .od-section{display:none}
+.od-mini{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}
+.od-mini div{background:#f6f9f7;border:1px solid #e7eee9;border-radius:8px;padding:7px}
+.od-mini b{display:block;color:var(--orca);font-size:14px}.od-mini span{font-size:9px;color:var(--muted)}
+.od-scenario{border:1px solid #e2ebe5;border-radius:9px;padding:9px;margin-top:7px;background:#fbfcfb}
+.od-scenario strong{display:block;color:var(--orca);font-size:11px}.od-scenario span{display:block;font-size:10px;color:#60736a;margin-top:2px}
+.od-meter{height:7px;background:#e7eee9;border-radius:99px;overflow:hidden;margin-top:6px}
+.od-meter i{display:block;height:100%;background:#397b60;border-radius:99px}
+.od-input{width:100%;border:1px solid #ccd9d1;border-radius:7px;padding:7px 8px;font-size:11px;box-sizing:border-box}
+.od-grid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.od-value{font-weight:800;color:var(--orca);font-size:15px}
+.od-disclaimer{font-size:9px;color:#78857f;margin-top:7px;line-height:1.45}
+.od-cascade{display:flex;align-items:center;gap:4px;overflow-x:auto;padding:5px 0}
+.od-cascade .box{min-width:70px;padding:7px 5px;border:1px solid #dbe7df;border-radius:8px;background:#f7faf8;text-align:center;font-size:9px;color:#385448}
+.od-cascade .arrow{font-size:12px;color:#7b8b84}
+.orca-dashboard.is-collapsed + *{}
+@media(max-width:700px){
+ .orca-dashboard.is-collapsed{width:46px}
+ .od-mini{grid-template-columns:1fr}
+}
+
+&lt;/style&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;spatial-nav&quot;&gt;
+&lt;header class=&quot;topbar&quot;&gt;
+ &lt;nav class=&quot;nav&quot;&gt;
+  &lt;a class=&quot;brand&quot; href=&quot;index.html&quot;&gt;ORCA&lt;/a&gt;
+  &lt;div class=&quot;navlinks&quot;&gt;&lt;a class=&quot;&quot; href=&quot;index.html&quot;&gt;Home&lt;/a&gt;&lt;a class=&quot;active&quot; href=&quot;spatial.html&quot;&gt;Spatial&lt;/a&gt;&lt;a class=&quot;&quot; href=&quot;technology.html&quot;&gt;Technology&lt;/a&gt;&lt;a class=&quot;&quot; href=&quot;cascade.html&quot;&gt;Heat Cascade&lt;/a&gt;&lt;a class=&quot;&quot; href=&quot;economic.html&quot;&gt;Economic&lt;/a&gt;&lt;a class=&quot;&quot; href=&quot;community.html&quot;&gt;Community&lt;/a&gt;&lt;a class=&quot;&quot; href=&quot;about.html&quot;&gt;About&lt;/a&gt;&lt;/div&gt;
+ &lt;/nav&gt;
+&lt;/header&gt;&lt;/div&gt;
+    
+    &lt;div id=&quot;legendControl&quot; class=&quot;legend-control&quot;&gt;
+  &lt;button id=&quot;legendToggle&quot; class=&quot;legend-toggle&quot; type=&quot;button&quot;&gt;
+    &lt;span&gt;Legenda&lt;/span&gt;&lt;span id=&quot;legendArrow&quot;&gt;▼&lt;/span&gt;
+  &lt;/button&gt;
+
+  &lt;div id=&quot;legendContent&quot; class=&quot;legend-content&quot;&gt;
+    &lt;div&gt;&lt;span class=&quot;legend-dot&quot; style=&quot;background:red&quot;&gt;&lt;/span&gt;Candi Gedong Songo&lt;/div&gt;
+    &lt;div&gt;&lt;span class=&quot;legend-line dashed-red&quot;&gt;&lt;/span&gt;Buffer 2 km (rencana ESDM/PLN)&lt;/div&gt;
+    &lt;div&gt;&lt;span class=&quot;legend-dot&quot; style=&quot;background:orange&quot;&gt;&lt;/span&gt;Kelompok tani kopi, Jambu (n=16)&lt;/div&gt;
+    &lt;div&gt;&lt;span class=&quot;legend-dot&quot; style=&quot;background:#32cd32&quot;&gt;&lt;/span&gt;Hortikultura (titik proksi)&lt;/div&gt;
+    &lt;div&gt;&lt;span class=&quot;legend-dot candidate&quot;&gt;&lt;/span&gt;Tapak kandidat (belum diisi)&lt;/div&gt;
+    &lt;div&gt;&lt;span class=&quot;legend-line yellow-line&quot;&gt;&lt;/span&gt;Garis jarak ke Gedong Songo&lt;/div&gt;
+    &lt;small&gt;
+      Jarak garis lurus.&lt;br&gt;
+      Arahkan kursor ke titik untuk jarak dan tingkat keyakinan data.&lt;br&gt;
+      Klik peta: koordinat + jarak.
+    &lt;/small&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+    
+            &lt;div class=&quot;spatial-spacer&quot;&gt;&lt;/div&gt;&lt;header class=&quot;site-header&quot;&gt;
+              &lt;div&gt;&lt;strong&gt;ORCA | SPATIAL DASHBOARD&lt;/strong&gt;&lt;span&gt;Organic Rankine Cycle Analysis • Gedong Songo &amp;amp; wilayah calon pengguna&lt;/span&gt;&lt;/div&gt;
+              &lt;span class=&quot;site-tag&quot;&gt;Lampiran interaktif&lt;/span&gt;
+            &lt;/header&gt;
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_b0fa60a674d0e5e8a7166a7dcb2a619b&quot; &gt;&lt;/div&gt;
+        
+
+&lt;aside class=&quot;orca-dashboard&quot; id=&quot;orcaDashboard&quot; aria-label=&quot;Dashboard analisis spasial ORCA&quot;&gt;
+ &lt;div class=&quot;od-head&quot;&gt;
+  &lt;div class=&quot;od-eyebrow&quot;&gt;Spatial decision support&lt;/div&gt;
+  &lt;div class=&quot;od-title&quot;&gt;ORCA Spatial Dashboard&lt;/div&gt;
+  &lt;div class=&quot;od-sub&quot;&gt;Peta lokasi, kebutuhan panas, dan kerangka keputusan ORCA&lt;/div&gt;
+  &lt;button class=&quot;od-toggle&quot; id=&quot;dashboardToggle&quot; type=&quot;button&quot; aria-expanded=&quot;true&quot; title=&quot;Buka/tutup dashboard&quot;&gt;−&lt;/button&gt;
+ &lt;/div&gt;
+
+ &lt;div class=&quot;od-section&quot;&gt;
+  &lt;div class=&quot;od-label&quot;&gt;Ringkasan spasial&lt;/div&gt;
+  &lt;div class=&quot;od-stats&quot;&gt;
+   &lt;div class=&quot;od-stat&quot;&gt;&lt;b id=&quot;statCoffee&quot;&gt;16&lt;/b&gt;&lt;span&gt;Kelompok tani kopi&lt;/span&gt;&lt;/div&gt;
+   &lt;div class=&quot;od-stat&quot;&gt;&lt;b id=&quot;statProxy&quot;&gt;3&lt;/b&gt;&lt;span&gt;Titik proksi&lt;/span&gt;&lt;/div&gt;
+   &lt;div class=&quot;od-stat&quot;&gt;&lt;b id=&quot;statMedian&quot;&gt;—&lt;/b&gt;&lt;span&gt;Median jarak kopi (km)&lt;/span&gt;&lt;/div&gt;
+   &lt;div class=&quot;od-stat&quot;&gt;&lt;b id=&quot;statRange&quot;&gt;—&lt;/b&gt;&lt;span&gt;Rentang jarak kopi&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;od-note&quot;&gt;Jarak dihitung sebagai garis lurus dari Gedong Songo berdasarkan koordinat yang tersedia.&lt;/div&gt;
+ &lt;/div&gt;
+
+ &lt;div class=&quot;od-section&quot;&gt;
+  &lt;div class=&quot;od-label&quot;&gt;Cari &amp;amp; filter lokasi&lt;/div&gt;
+  &lt;input class=&quot;od-search&quot; id=&quot;orcaSearch&quot; type=&quot;search&quot; placeholder=&quot;Ketik nama kelompok / wilayah…&quot;&gt;
+  &lt;div class=&quot;od-note&quot; id=&quot;searchCount&quot;&gt;20 titik terdata&lt;/div&gt;
+  &lt;div class=&quot;od-checks&quot; style=&quot;margin-top:9px&quot;&gt;
+   &lt;label class=&quot;od-check&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;filterGedong&quot; checked&gt;&lt;i class=&quot;od-dot&quot; style=&quot;background:#df4545&quot;&gt;&lt;/i&gt; Gedong Songo &amp;amp; buffer&lt;/label&gt;
+   &lt;label class=&quot;od-check&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;filterKopi&quot; checked&gt;&lt;i class=&quot;od-dot&quot; style=&quot;background:#e99a30&quot;&gt;&lt;/i&gt; Kelompok tani kopi Jambu (16)&lt;/label&gt;
+   &lt;label class=&quot;od-check&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;filterProxy&quot; checked&gt;&lt;i class=&quot;od-dot&quot; style=&quot;background:#52b65b&quot;&gt;&lt;/i&gt; Titik wilayah proksi (3)&lt;/label&gt;
+  &lt;/div&gt;
+ &lt;/div&gt;
+
+ &lt;div class=&quot;od-section&quot;&gt;
+  &lt;div class=&quot;od-label&quot;&gt;Kelayakan lokasi awal&lt;/div&gt;
+  &lt;div class=&quot;od-note&quot;&gt;Skor berikut adalah screening spasial, bukan studi kelayakan final. Jarak makin dekat mendapat skor lebih tinggi.&lt;/div&gt;
+  &lt;div class=&quot;od-grid2&quot; style=&quot;margin-top:7px&quot;&gt;
+   &lt;div class=&quot;od-stat&quot;&gt;&lt;b id=&quot;suitNearest&quot;&gt;—&lt;/b&gt;&lt;span&gt;Proksi terdekat&lt;/span&gt;&lt;/div&gt;
+   &lt;div class=&quot;od-stat&quot;&gt;&lt;b id=&quot;suitCoffee&quot;&gt;—&lt;/b&gt;&lt;span&gt;Kopi terdekat (km)&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;od-scenario&quot;&gt;&lt;strong id=&quot;suitText&quot;&gt;Menunggu perhitungan…&lt;/strong&gt;&lt;span id=&quot;suitDetail&quot;&gt;Gunakan jarak sebagai indikator awal untuk prioritas survei demand.&lt;/span&gt;&lt;/div&gt;
+ &lt;/div&gt;
+
+ &lt;div class=&quot;od-section&quot;&gt;
+  &lt;div class=&quot;od-label&quot;&gt;Skenario suhu ORCA&lt;/div&gt;
+  &lt;div class=&quot;od-scenario&quot;&gt;
+   &lt;strong&gt;Skenario A · 170 → 140 °C&lt;/strong&gt;
+   &lt;span&gt;Flash PLTP + ORC sebagai bottoming cycle&lt;/span&gt;
+   &lt;div class=&quot;od-meter&quot;&gt;&lt;i style=&quot;width:75%&quot;&gt;&lt;/i&gt;&lt;/div&gt;
+   &lt;span&gt;Ilustrasi esai: ≈ 3 MW tambahan pada contoh PLTP 20 MW.&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;od-scenario&quot;&gt;
+   &lt;strong&gt;Skenario B · 150 → 70 °C&lt;/strong&gt;
+   &lt;span&gt;ORC sebagai pembangkit utama&lt;/span&gt;
+   &lt;div class=&quot;od-meter&quot;&gt;&lt;i style=&quot;width:55%&quot;&gt;&lt;/i&gt;&lt;/div&gt;
+   &lt;span&gt;Ilustrasi esai: ≈ 5–12 MW, bergantung debit sumur.&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;od-disclaimer&quot;&gt;Angka skenario mengikuti asumsi ilustratif pada esai dan harus diganti dengan data uji sumur, debit, dan kimia fluida.&lt;/div&gt;
+ &lt;/div&gt;
+
+ &lt;div class=&quot;od-section&quot;&gt;
+  &lt;div class=&quot;od-label&quot;&gt;Heat cascade&lt;/div&gt;
+  &lt;div class=&quot;od-cascade&quot;&gt;
+   &lt;div class=&quot;box&quot;&gt;Reservoir&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;
+   &lt;div class=&quot;box&quot;&gt;Flash / ORC&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;
+   &lt;div class=&quot;box&quot;&gt;Pengeringan kopi&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;
+   &lt;div class=&quot;box&quot;&gt;Cold chain&lt;/div&gt;&lt;div class=&quot;arrow&quot;&gt;→&lt;/div&gt;
+   &lt;div class=&quot;box&quot;&gt;Reinjeksi&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;od-note&quot;&gt;Prinsipnya: panas digunakan bertingkat dari kebutuhan suhu tinggi ke rendah sebelum reinjeksi.&lt;/div&gt;
+ &lt;/div&gt;
+
+ &lt;div class=&quot;od-section&quot;&gt;
+  &lt;div class=&quot;od-label&quot;&gt;Kalkulator panas sederhana&lt;/div&gt;
+  &lt;div class=&quot;od-grid2&quot;&gt;
+   &lt;div&gt;&lt;label class=&quot;od-note&quot;&gt;Debit (kg/s)&lt;/label&gt;&lt;input class=&quot;od-input&quot; id=&quot;flowInput&quot; type=&quot;number&quot; value=&quot;200&quot; min=&quot;1&quot;&gt;&lt;/div&gt;
+   &lt;div&gt;&lt;label class=&quot;od-note&quot;&gt;T masuk (°C)&lt;/label&gt;&lt;input class=&quot;od-input&quot; id=&quot;tinInput&quot; type=&quot;number&quot; value=&quot;140&quot;&gt;&lt;/div&gt;
+   &lt;div&gt;&lt;label class=&quot;od-note&quot;&gt;T keluar (°C)&lt;/label&gt;&lt;input class=&quot;od-input&quot; id=&quot;toutInput&quot; type=&quot;number&quot; value=&quot;80&quot;&gt;&lt;/div&gt;
+   &lt;div&gt;&lt;label class=&quot;od-note&quot;&gt;Cp (kJ/kg·K)&lt;/label&gt;&lt;input class=&quot;od-input&quot; id=&quot;cpInput&quot; type=&quot;number&quot; value=&quot;4.3&quot; step=&quot;0.1&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;od-result&quot;&gt;&lt;span class=&quot;od-value&quot; id=&quot;heatResult&quot;&gt;— MWth&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px&quot;&gt;Q = ṁ × Cp × ΔT. Nilai ini adalah panas termal teoritis yang tersedia.&lt;/span&gt;&lt;/div&gt;
+ &lt;/div&gt;
+
+ &lt;div class=&quot;od-section&quot;&gt;
+  &lt;div class=&quot;od-label&quot;&gt;Pengukuran jarak&lt;/div&gt;
+  &lt;div class=&quot;od-row&quot;&gt;
+   &lt;button class=&quot;od-btn primary&quot; id=&quot;measureBtn&quot;&gt;Mulai ukur 2 titik&lt;/button&gt;
+   &lt;button class=&quot;od-btn&quot; id=&quot;clearMeasure&quot;&gt;Hapus garis&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;od-result&quot; id=&quot;measureResult&quot;&gt;Pilih dua lokasi pada peta untuk mengukur jarak garis lurus.&lt;/div&gt;
+ &lt;/div&gt;
+
+ &lt;div class=&quot;od-section&quot;&gt;
+  &lt;div class=&quot;od-label&quot;&gt;Catatan interpretasi&lt;/div&gt;
+  &lt;div class=&quot;od-note&quot; style=&quot;font-size:11px;line-height:1.55&quot;&gt;
+   Titik Bandungan dan Sumowono merupakan lokasi proksi berkeyakinan rendah. Kopeng dan kelompok tani mengikuti tingkat keyakinan pada data awal. Tapak kandidat belum diisi.
+  &lt;/div&gt;
+ &lt;/div&gt;
+&lt;/aside&gt;
+
+&lt;/body&gt;
+&lt;script&gt;
+    
+    
+            var map_b0fa60a674d0e5e8a7166a7dcb2a619b = L.map(
+                &quot;map_b0fa60a674d0e5e8a7166a7dcb2a619b&quot;,
+                {
+                    center: [-7.26, 110.35],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 12,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_378215fb998f84fa9a4dade5345a49af = L.tileLayer(
+                &quot;https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 17,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;Esri World Imagery&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            tile_layer_378215fb998f84fa9a4dade5345a49af.addTo(map_b0fa60a674d0e5e8a7166a7dcb2a619b);
+        
+    
+            var tile_layer_3d6c77f5488ae4ced20321d1de7c9573 = L.tileLayer(
+                &quot;https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 17,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;Esri World Imagery (cadangan)&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            var tile_layer_a0f7514246cd80fd0d3cb27503adcefe = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            var tile_layer_b1925988be5356e4960dea54839e5e6a = L.tileLayer(
+                &quot;https://tile.opentopomap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 18,
+  &quot;maxNativeZoom&quot;: 18,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;OpenTopoMap&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            var feature_group_861eb8c0dbe37f03fc4c1747309192d8 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_cb2896132538c1f847a848cdfd227c84 = L.circleMarker(
+                [-7.2085, 110.3419],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_861eb8c0dbe37f03fc4c1747309192d8);
+        
+    
+            circle_marker_cb2896132538c1f847a848cdfd227c84.bindTooltip(
+                `&lt;div&gt;
+                     Candi Gedong Songo | 0.0 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var circle_f6c682865a8ae63cd337e408bac1c166 = L.circle(
+                [-7.2085, 110.3419],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: &quot;6&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 0.12, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 2000, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(feature_group_861eb8c0dbe37f03fc4c1747309192d8);
+        
+    
+            circle_f6c682865a8ae63cd337e408bac1c166.bindTooltip(
+                `&lt;div&gt;
+                     Buffer 2 km (rencana ESDM/PLN)
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            feature_group_861eb8c0dbe37f03fc4c1747309192d8.addTo(map_b0fa60a674d0e5e8a7166a7dcb2a619b);
+        
+    
+            var feature_group_bc6e4bd3edae541b64d1daacdf8b75d3 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_68a9d09213004c345ce34c30dad8a17e = L.circleMarker(
+                [-7.309305223502057, 110.35183319024152],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_68a9d09213004c345ce34c30dad8a17e.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Manunggal 1 (Jambu) | 11.3 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_78c303e57f082bf097d465e3946a8f1b = L.polyline(
+                [[-7.2085, 110.3419], [-7.309305223502057, 110.35183319024152]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_1431fc3b05de5b2a31837ca0578ecc56 = L.circleMarker(
+                [-7.310055217025148, 110.34566633031518],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_1431fc3b05de5b2a31837ca0578ecc56.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Manunggal 2 (Jambu) | 11.3 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_0d086b718f86ca4d36442233a040c612 = L.polyline(
+                [[-7.2085, 110.3419], [-7.310055217025148, 110.34566633031518]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_132d4350847b668a220debab1e186713 = L.circleMarker(
+                [-7.30611162208413, 110.34638865451575],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_132d4350847b668a220debab1e186713.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Manunggal 3 (Jambu) | 10.9 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_f4fd5656b3497fda1446bbbecc02483f = L.polyline(
+                [[-7.2085, 110.3419], [-7.30611162208413, 110.34638865451575]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_81e6d3bd6f34344aa5fb552b010d6ba2 = L.circleMarker(
+                [-7.304084448063864, 110.35194489447183],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_81e6d3bd6f34344aa5fb552b010d6ba2.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Manunggal 4 (Jambu) | 10.7 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_565bdd169582358529dcf820f40b4ce3 = L.polyline(
+                [[-7.2085, 110.3419], [-7.304084448063864, 110.35194489447183]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_ec408c45157973e89a70805671484deb = L.circleMarker(
+                [-7.304995771350292, 110.35669424513829],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_ec408c45157973e89a70805671484deb.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Manunggal 5 (Jambu) | 10.9 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_a91fe089ad8027b9e0cc99437840ba97 = L.polyline(
+                [[-7.2085, 110.3419], [-7.304995771350292, 110.35669424513829]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_014e2c916eb1f7ae258d948be2c89bf3 = L.circleMarker(
+                [-7.309168764530054, 110.36527742861983],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_014e2c916eb1f7ae258d948be2c89bf3.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Manunggal 6 (Jambu) | 11.5 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_e9c6f0e05366c352b699e4500ae108f1 = L.polyline(
+                [[-7.2085, 110.3419], [-7.309168764530054, 110.36527742861983]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_dcb928861bd71bfb26053b4a192c92dd = L.circleMarker(
+                [-7.316941441446897, 110.36083364120957],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_dcb928861bd71bfb26053b4a192c92dd.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Manunggal 7 (Jambu) | 12.2 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_f0dfa96cf2173c7e44bc6b0986043864 = L.polyline(
+                [[-7.2085, 110.3419], [-7.316941441446897, 110.36083364120957]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_8297d2629f9f3779518a5a356ecde5b0 = L.circleMarker(
+                [-7.324585083193776, 110.36749971869232],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_8297d2629f9f3779518a5a356ecde5b0.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Manunggal 8 (Jambu) | 13.2 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_58a31cfbfb1147f2f034a9992c7d2647 = L.polyline(
+                [[-7.2085, 110.3419], [-7.324585083193776, 110.36749971869232]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_5951f46a3d3547dff63a08221ff84bb7 = L.circleMarker(
+                [-7.288995702547132, 110.36383378866987],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_5951f46a3d3547dff63a08221ff84bb7.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Rahayu 1 (Jambu) | 9.3 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_c675734ec51519da233d17a38598110d = L.polyline(
+                [[-7.2085, 110.3419], [-7.288995702547132, 110.36383378866987]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_31b24c6ea162dd5d29b0505afbe26ed0 = L.circleMarker(
+                [-7.2981643585559715, 110.35513859594087],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_31b24c6ea162dd5d29b0505afbe26ed0.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Rahayu 2 (Jambu) | 10.1 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_14afcf8996e41582b6734d72fcebb398 = L.polyline(
+                [[-7.2085, 110.3419], [-7.2981643585559715, 110.35513859594087]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_087ebefd5a9eda4b9eb6876cebaf177f = L.circleMarker(
+                [-7.302697380457007, 110.3624446866988],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_087ebefd5a9eda4b9eb6876cebaf177f.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Rahayu 3 (Jambu) | 10.7 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_6fd52ae373c051aab91be3e61ade363d = L.polyline(
+                [[-7.2085, 110.3419], [-7.302697380457007, 110.3624446866988]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_e85481d89224aa13e6d740b34d554a76 = L.circleMarker(
+                [-7.314665577671703, 110.36977765021976],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_e85481d89224aa13e6d740b34d554a76.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Rahayu 4 (Jambu) | 12.2 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_d21f9c0eca81b756f528dfcf2b3bf62f = L.polyline(
+                [[-7.2085, 110.3419], [-7.314665577671703, 110.36977765021976]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_1c7df62136234f4b993817ace0b30074 = L.circleMarker(
+                [-7.297058071205545, 110.35955557626525],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_1c7df62136234f4b993817ace0b30074.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Rahayu 5 (Jambu) | 10.0 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_eaf7207932b53e3fd7e1bcdf0e75a0e0 = L.polyline(
+                [[-7.2085, 110.3419], [-7.297058071205545, 110.35955557626525]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_ff50e26bc4675fd21cf98c4e2a5bf7fe = L.circleMarker(
+                [-7.308607135543631, 110.36469480073936],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_ff50e26bc4675fd21cf98c4e2a5bf7fe.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Rahayu 6 (Jambu) | 11.4 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_1c4db1cf2b66c6b25d4676d069ccf565 = L.polyline(
+                [[-7.2085, 110.3419], [-7.308607135543631, 110.36469480073936]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_f605b2631726c1eb314c0258c4cade15 = L.circleMarker(
+                [-7.295636027834604, 110.35819421032457],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_f605b2631726c1eb314c0258c4cade15.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Rahayu 7 (Jambu) | 9.9 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_648c06328e0b20aee94cb45e33b55b7d = L.polyline(
+                [[-7.2085, 110.3419], [-7.295636027834604, 110.35819421032457]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            var circle_marker_5de4fadcc775352a955c72c14e2bb608 = L.circleMarker(
+                [-7.29391552719662, 110.36324978480508],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;orange&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            circle_marker_5de4fadcc775352a955c72c14e2bb608.bindTooltip(
+                `&lt;div&gt;
+                     Kelompok tani kopi Rahayu 8 (Jambu) | 9.8 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_51844090d126ab0aea94e0a7bbf6bf4d = L.polyline(
+                [[-7.2085, 110.3419], [-7.29391552719662, 110.36324978480508]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_bc6e4bd3edae541b64d1daacdf8b75d3);
+        
+    
+            feature_group_bc6e4bd3edae541b64d1daacdf8b75d3.addTo(map_b0fa60a674d0e5e8a7166a7dcb2a619b);
+        
+    
+            var feature_group_797865fd2aa19551bc8abef8f2dc6b89 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_a88368ebc1e354aa793d8837f4e29d26 = L.circleMarker(
+                [-7.19917, 110.28444],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;lime&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_797865fd2aa19551bc8abef8f2dc6b89);
+        
+    
+            circle_marker_a88368ebc1e354aa793d8837f4e29d26.bindTooltip(
+                `&lt;div&gt;
+                     Sumowono (proksi: Desa Keseneng) | 6.4 km dari Gedong Songo | keyakinan: rendah
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_c0b8a628dd0a109cb6eb0eb261eaa9d9 = L.polyline(
+                [[-7.2085, 110.3419], [-7.19917, 110.28444]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_797865fd2aa19551bc8abef8f2dc6b89);
+        
+    
+            var circle_marker_9b3da31e1a81f1f2e12915e78166e882 = L.circleMarker(
+                [-7.3998, 110.4177],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;lime&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_797865fd2aa19551bc8abef8f2dc6b89);
+        
+    
+            circle_marker_9b3da31e1a81f1f2e12915e78166e882.bindTooltip(
+                `&lt;div&gt;
+                     Kopeng (Getasan) | 22.9 km dari Gedong Songo | keyakinan: sedang
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_f306a24375e91a238a15dc276a5ff346 = L.polyline(
+                [[-7.2085, 110.3419], [-7.3998, 110.4177]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_797865fd2aa19551bc8abef8f2dc6b89);
+        
+    
+            var circle_marker_e5487622433c8cc30a80c17837deda1e = L.circleMarker(
+                [-7.2083, 110.3667],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;black&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;lime&quot;, &quot;fillOpacity&quot;: 0.95, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 6, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_797865fd2aa19551bc8abef8f2dc6b89);
+        
+    
+            circle_marker_e5487622433c8cc30a80c17837deda1e.bindTooltip(
+                `&lt;div&gt;
+                     Kecamatan Bandungan (pusat perkiraan) | 2.7 km dari Gedong Songo | keyakinan: rendah
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+    
+            var poly_line_09cfaa97c4f1136749d8f12ab00b78a0 = L.polyline(
+                [[-7.2085, 110.3419], [-7.2083, 110.3667]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;yellow&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;yellow&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.5, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(feature_group_797865fd2aa19551bc8abef8f2dc6b89);
+        
+    
+            feature_group_797865fd2aa19551bc8abef8f2dc6b89.addTo(map_b0fa60a674d0e5e8a7166a7dcb2a619b);
+        
+    
+            var feature_group_ecb82017d61cea5595fee5bf5d87feb4 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            feature_group_ecb82017d61cea5595fee5bf5d87feb4.addTo(map_b0fa60a674d0e5e8a7166a7dcb2a619b);
+        
+    
+            L.control.fullscreen(
+                {
+  &quot;position&quot;: &quot;topleft&quot;,
+  &quot;title&quot;: &quot;Full Screen&quot;,
+  &quot;titleCancel&quot;: &quot;Exit Full Screen&quot;,
+  &quot;forceSeparateButton&quot;: false,
+}
+            ).addTo(map_b0fa60a674d0e5e8a7166a7dcb2a619b);
+        
+    
+var GS=[-7.2085,110.3419]; var M=map_b0fa60a674d0e5e8a7166a7dcb2a619b;
+M.on(&#x27;click&#x27;,function(e){var d=(M.distance(e.latlng,GS)/1000).toFixed(2);
+L.popup().setLatLng(e.latlng).setContent(&#x27;lat, lon: &#x27;+e.latlng.lat.toFixed(5)+&#x27;, &#x27;+e.latlng.lng.toFixed(5)+&#x27;&lt;br&gt;&#x27;+d+&#x27; km dari Gedong Songo&#x27;).openOn(M);});
+    
+            var layer_control_dd20ed32df70ee7e67ea354a58ae9355_layers = {
+                base_layers : {
+                    &quot;Citra satelit (Esri)&quot; : tile_layer_378215fb998f84fa9a4dade5345a49af,
+                    &quot;Citra satelit (Esri, server cadangan)&quot; : tile_layer_3d6c77f5488ae4ced20321d1de7c9573,
+                    &quot;Peta jalan (OSM)&quot; : tile_layer_a0f7514246cd80fd0d3cb27503adcefe,
+                    &quot;Topografi&quot; : tile_layer_b1925988be5356e4960dea54839e5e6a,
+                },
+                overlays :  {
+                    &quot;Gedong Songo&quot; : feature_group_861eb8c0dbe37f03fc4c1747309192d8,
+                    &quot;Kopi Jambu&quot; : feature_group_bc6e4bd3edae541b64d1daacdf8b75d3,
+                    &quot;Hortikultura&quot; : feature_group_797865fd2aa19551bc8abef8f2dc6b89,
+                    &quot;Tapak kandidat&quot; : feature_group_ecb82017d61cea5595fee5bf5d87feb4,
+                },
+            };
+            let layer_control_dd20ed32df70ee7e67ea354a58ae9355 = L.control.layers(
+                layer_control_dd20ed32df70ee7e67ea354a58ae9355_layers.base_layers,
+                layer_control_dd20ed32df70ee7e67ea354a58ae9355_layers.overlays,
+                {
+  &quot;position&quot;: &quot;topright&quot;,
+  &quot;collapsed&quot;: true,
+  &quot;autoZIndex&quot;: true,
+}
+            ).addTo(map_b0fa60a674d0e5e8a7166a7dcb2a619b);
+
+        
+
+// Collapsible legend
+const legendToggle=document.getElementById(&#x27;legendToggle&#x27;);
+const legendContent=document.getElementById(&#x27;legendContent&#x27;);
+const legendArrow=document.getElementById(&#x27;legendArrow&#x27;);
+legendToggle.addEventListener(&#x27;click&#x27;,()=&gt;{
+  const open=legendContent.classList.toggle(&#x27;active&#x27;);
+  legendArrow.textContent=open?&#x27;▲&#x27;:&#x27;▼&#x27;;
+});
+
+
+// Dashboard buka/tutup — saat ditutup hanya menyisakan tombol kecil.
+const dashboard=document.getElementById(&#x27;orcaDashboard&#x27;);
+const dashboardToggle=document.getElementById(&#x27;dashboardToggle&#x27;);
+dashboardToggle.addEventListener(&#x27;click&#x27;,()=&gt;{
+ const collapsed=dashboard.classList.toggle(&#x27;is-collapsed&#x27;);
+ dashboardToggle.textContent=collapsed?&#x27;☰&#x27;:&#x27;−&#x27;;
+ dashboardToggle.title=collapsed?&#x27;Buka dashboard&#x27;:&#x27;Tutup dashboard&#x27;;
+ dashboardToggle.setAttribute(&#x27;aria-expanded&#x27;,String(!collapsed));
+ setTimeout(()=&gt;orcaMap.invalidateSize(),280);
+});
+
+// Kalkulator panas sederhana berdasarkan persamaan Q = m_dot * Cp * DeltaT.
+function updateHeat(){
+ const flow=parseFloat(document.getElementById(&#x27;flowInput&#x27;).value)||0;
+ const tin=parseFloat(document.getElementById(&#x27;tinInput&#x27;).value)||0;
+ const tout=parseFloat(document.getElementById(&#x27;toutInput&#x27;).value)||0;
+ const cp=parseFloat(document.getElementById(&#x27;cpInput&#x27;).value)||0;
+ const q=flow*cp*Math.max(0,tin-tout)/1000;
+ document.getElementById(&#x27;heatResult&#x27;).textContent=q.toFixed(2)+&#x27; MWth&#x27;;
+}
+[&#x27;flowInput&#x27;,&#x27;tinInput&#x27;,&#x27;toutInput&#x27;,&#x27;cpInput&#x27;].forEach(id=&gt;document.getElementById(id).addEventListener(&#x27;input&#x27;,updateHeat));
+
+// Screening spasial awal: jarak terdekat sebagai indikator prioritas survei demand.
+function updateSuitability(){
+ const proxies=markerRecords.filter(p=&gt;p.category===&#x27;proksi&#x27;).sort((a,b)=&gt;a.distance-b.distance);
+ const coffees=markerRecords.filter(p=&gt;p.category===&#x27;kopi&#x27;).sort((a,b)=&gt;a.distance-b.distance);
+ if(proxies.length){
+   document.getElementById(&#x27;suitNearest&#x27;).textContent=proxies[0].distance.toFixed(1)+&#x27; km&#x27;;
+ }
+ if(coffees.length){
+   document.getElementById(&#x27;suitCoffee&#x27;).textContent=coffees[0].distance.toFixed(1);
+ }
+ const nearest=Math.min(...markerRecords.filter(p=&gt;p.category!==&#x27;gedong&#x27;).map(p=&gt;p.distance));
+ let label=&#x27;Prioritas survei: tinggi&#x27;;
+ if(nearest&gt;15) label=&#x27;Prioritas survei: rendah&#x27;;
+ else if(nearest&gt;8) label=&#x27;Prioritas survei: menengah&#x27;;
+ document.getElementById(&#x27;suitText&#x27;).textContent=label;
+ document.getElementById(&#x27;suitDetail&#x27;).textContent=
+   &#x27;Indikator hanya memakai jarak. Kebutuhan panas, akses, elevasi, lahan, dan izin belum dinilai.&#x27;;
+}
+
+// ORCA v2 dashboard: marker registry is extracted from the original Folium map.
+const orcaPoints = [{&quot;marker&quot;:&quot;circle_marker_cb2896132538c1f847a848cdfd227c84&quot;,&quot;lat&quot;:-7.2085,&quot;lon&quot;:110.3419,&quot;category&quot;:&quot;gedong&quot;,&quot;label&quot;:&quot;Candi Gedong Songo&quot;,&quot;sourceTooltip&quot;:&quot;Candi Gedong Songo | 0.0 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_68a9d09213004c345ce34c30dad8a17e&quot;,&quot;lat&quot;:-7.309305223502057,&quot;lon&quot;:110.35183319024152,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Manunggal 1 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Manunggal 1 (Jambu) | 11.3 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_1431fc3b05de5b2a31837ca0578ecc56&quot;,&quot;lat&quot;:-7.310055217025148,&quot;lon&quot;:110.34566633031518,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Manunggal 2 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Manunggal 2 (Jambu) | 11.3 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_132d4350847b668a220debab1e186713&quot;,&quot;lat&quot;:-7.30611162208413,&quot;lon&quot;:110.34638865451575,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Manunggal 3 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Manunggal 3 (Jambu) | 10.9 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_81e6d3bd6f34344aa5fb552b010d6ba2&quot;,&quot;lat&quot;:-7.304084448063864,&quot;lon&quot;:110.35194489447183,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Manunggal 4 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Manunggal 4 (Jambu) | 10.7 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_ec408c45157973e89a70805671484deb&quot;,&quot;lat&quot;:-7.304995771350292,&quot;lon&quot;:110.35669424513829,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Manunggal 5 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Manunggal 5 (Jambu) | 10.9 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_014e2c916eb1f7ae258d948be2c89bf3&quot;,&quot;lat&quot;:-7.309168764530054,&quot;lon&quot;:110.36527742861983,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Manunggal 6 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Manunggal 6 (Jambu) | 11.5 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_dcb928861bd71bfb26053b4a192c92dd&quot;,&quot;lat&quot;:-7.316941441446897,&quot;lon&quot;:110.36083364120957,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Manunggal 7 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Manunggal 7 (Jambu) | 12.2 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_8297d2629f9f3779518a5a356ecde5b0&quot;,&quot;lat&quot;:-7.324585083193776,&quot;lon&quot;:110.36749971869232,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Manunggal 8 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Manunggal 8 (Jambu) | 13.2 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_5951f46a3d3547dff63a08221ff84bb7&quot;,&quot;lat&quot;:-7.288995702547132,&quot;lon&quot;:110.36383378866987,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Rahayu 1 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Rahayu 1 (Jambu) | 9.3 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_31b24c6ea162dd5d29b0505afbe26ed0&quot;,&quot;lat&quot;:-7.2981643585559715,&quot;lon&quot;:110.35513859594087,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Rahayu 2 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Rahayu 2 (Jambu) | 10.1 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_087ebefd5a9eda4b9eb6876cebaf177f&quot;,&quot;lat&quot;:-7.302697380457007,&quot;lon&quot;:110.3624446866988,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Rahayu 3 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Rahayu 3 (Jambu) | 10.7 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_e85481d89224aa13e6d740b34d554a76&quot;,&quot;lat&quot;:-7.314665577671703,&quot;lon&quot;:110.36977765021976,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Rahayu 4 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Rahayu 4 (Jambu) | 12.2 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_1c7df62136234f4b993817ace0b30074&quot;,&quot;lat&quot;:-7.297058071205545,&quot;lon&quot;:110.35955557626525,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Rahayu 5 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Rahayu 5 (Jambu) | 10.0 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_ff50e26bc4675fd21cf98c4e2a5bf7fe&quot;,&quot;lat&quot;:-7.308607135543631,&quot;lon&quot;:110.36469480073936,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Rahayu 6 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Rahayu 6 (Jambu) | 11.4 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_f605b2631726c1eb314c0258c4cade15&quot;,&quot;lat&quot;:-7.295636027834604,&quot;lon&quot;:110.35819421032457,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Rahayu 7 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Rahayu 7 (Jambu) | 9.9 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_5de4fadcc775352a955c72c14e2bb608&quot;,&quot;lat&quot;:-7.29391552719662,&quot;lon&quot;:110.36324978480508,&quot;category&quot;:&quot;kopi&quot;,&quot;label&quot;:&quot;Kelompok tani kopi Rahayu 8 (Jambu)&quot;,&quot;sourceTooltip&quot;:&quot;Kelompok tani kopi Rahayu 8 (Jambu) | 9.8 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_a88368ebc1e354aa793d8837f4e29d26&quot;,&quot;lat&quot;:-7.19917,&quot;lon&quot;:110.28444,&quot;category&quot;:&quot;proksi&quot;,&quot;label&quot;:&quot;Sumowono (proksi: Desa Keseneng)&quot;,&quot;sourceTooltip&quot;:&quot;Sumowono (proksi: Desa Keseneng) | 6.4 km dari Gedong Songo | keyakinan: rendah&quot;,&quot;confidence&quot;:&quot;rendah&quot;},{&quot;marker&quot;:&quot;circle_marker_9b3da31e1a81f1f2e12915e78166e882&quot;,&quot;lat&quot;:-7.3998,&quot;lon&quot;:110.4177,&quot;category&quot;:&quot;proksi&quot;,&quot;label&quot;:&quot;Kopeng (Getasan)&quot;,&quot;sourceTooltip&quot;:&quot;Kopeng (Getasan) | 22.9 km dari Gedong Songo | keyakinan: sedang&quot;,&quot;confidence&quot;:&quot;sedang&quot;},{&quot;marker&quot;:&quot;circle_marker_e5487622433c8cc30a80c17837deda1e&quot;,&quot;lat&quot;:-7.2083,&quot;lon&quot;:110.3667,&quot;category&quot;:&quot;proksi&quot;,&quot;label&quot;:&quot;Kecamatan Bandungan (pusat perkiraan)&quot;,&quot;sourceTooltip&quot;:&quot;Kecamatan Bandungan (pusat perkiraan) | 2.7 km dari Gedong Songo | keyakinan: rendah&quot;,&quot;confidence&quot;:&quot;rendah&quot;}];
+const orcaMap=M, gedongRef=L.latLng(GS[0],GS[1]);
+const categoryGroups={gedong:feature_group_861eb8c0dbe37f03fc4c1747309192d8,kopi:feature_group_bc6e4bd3edae541b64d1daacdf8b75d3,proksi:feature_group_797865fd2aa19551bc8abef8f2dc6b89};
+const markerRecords=orcaPoints.map(p=&gt;{const marker=window[p.marker];return {...p,marker, distance:orcaMap.distance(gedongRef,L.latLng(p.lat,p.lon))/1000};});
+// Add consistent, informative popups while preserving original tooltips and coordinates.
+markerRecords.forEach(p=&gt;{
+ const catLabel=p.category===&#x27;kopi&#x27;?&#x27;Kelompok tani kopi — Jambu&#x27;:p.category===&#x27;proksi&#x27;?&#x27;Titik wilayah proksi&#x27;:&#x27;Titik acuan&#x27;;
+ const dist=p.distance.toFixed(2)+&#x27; km&#x27;;
+ const sourceNote=p.category===&#x27;proksi&#x27;?&#x27;Lokasi representatif/proksi sesuai keterangan data awal.&#x27;:&#x27;Atribut lokasi mengikuti data peta awal.&#x27;;
+ p.marker.bindPopup(`&lt;div class=&quot;orca-pop-title&quot;&gt;${p.label}&lt;/div&gt;&lt;div class=&quot;orca-pop-row&quot;&gt;&lt;span class=&quot;orca-pop-tag&quot;&gt;${catLabel}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;orca-pop-row&quot;&gt;&lt;b&gt;Koordinat:&lt;/b&gt; ${p.lat.toFixed(5)}, ${p.lon.toFixed(5)}&lt;/div&gt;&lt;div class=&quot;orca-pop-row&quot;&gt;&lt;b&gt;Jarak garis lurus:&lt;/b&gt; ${dist}&lt;/div&gt;&lt;div class=&quot;orca-pop-row&quot;&gt;&lt;b&gt;Keyakinan data:&lt;/b&gt; ${p.confidence}&lt;/div&gt;&lt;div class=&quot;orca-pop-row&quot;&gt;${sourceNote}&lt;/div&gt;`);
+});
+// Dynamic summary: use only the 16 original coffee group coordinates.
+const coffeeDistances=markerRecords.filter(p=&gt;p.category===&#x27;kopi&#x27;).map(p=&gt;p.distance).sort((a,b)=&gt;a-b);
+const median=coffeeDistances.length%2?(coffeeDistances[(coffeeDistances.length-1)/2]):(coffeeDistances[coffeeDistances.length/2-1]+coffeeDistances[coffeeDistances.length/2])/2;
+document.getElementById(&#x27;statCoffee&#x27;).textContent=coffeeDistances.length;
+document.getElementById(&#x27;statProxy&#x27;).textContent=markerRecords.filter(p=&gt;p.category===&#x27;proksi&#x27;).length;
+document.getElementById(&#x27;statMedian&#x27;).textContent=median.toFixed(1);
+document.getElementById(&#x27;statRange&#x27;).textContent=coffeeDistances[0].toFixed(1)+&#x27;–&#x27;+coffeeDistances[coffeeDistances.length-1].toFixed(1);
+updateHeat();
+updateSuitability();
+const search=document.getElementById(&#x27;orcaSearch&#x27;);
+function applyFilters(){
+ const enabled={gedong:document.getElementById(&#x27;filterGedong&#x27;).checked,kopi:document.getElementById(&#x27;filterKopi&#x27;).checked,proksi:document.getElementById(&#x27;filterProxy&#x27;).checked};
+ const q=search.value.trim().toLocaleLowerCase(&#x27;id&#x27;);let shown=0;
+ markerRecords.forEach(p=&gt;{const visible=enabled[p.category]&amp;&amp;p.label.toLocaleLowerCase(&#x27;id&#x27;).includes(q);p.marker.setStyle({opacity:visible?1:0,fillOpacity:visible?.95:0});if(visible)shown++;});
+ document.getElementById(&#x27;searchCount&#x27;).textContent=shown+&#x27; dari &#x27;+markerRecords.length+&#x27; titik ditampilkan&#x27;;
+}
+[&#x27;filterGedong&#x27;,&#x27;filterKopi&#x27;,&#x27;filterProxy&#x27;].forEach(id=&gt;document.getElementById(id).addEventListener(&#x27;change&#x27;,applyFilters));search.addEventListener(&#x27;input&#x27;,applyFilters);
+// Two-click distance measurement tool. The existing map click handler is replaced to avoid duplicate popups.
+let measuring=false,firstPoint=null,measureLine=null,measureMarkers=[];
+const measureBtn=document.getElementById(&#x27;measureBtn&#x27;),measureResult=document.getElementById(&#x27;measureResult&#x27;);
+measureBtn.addEventListener(&#x27;click&#x27;,()=&gt;{measuring=!measuring;firstPoint=null;measureBtn.textContent=measuring?&#x27;Pilih titik pertama…&#x27;:&#x27;Mulai ukur 2 titik&#x27;;measureBtn.classList.toggle(&#x27;primary&#x27;,measuring);measureResult.textContent=measuring?&#x27;Klik lokasi pertama pada peta. Setelah itu klik lokasi kedua.&#x27;:&#x27;Mode pengukuran tidak aktif.&#x27;;});
+document.getElementById(&#x27;clearMeasure&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{if(measureLine)orcaMap.removeLayer(measureLine);measureMarkers.forEach(m=&gt;orcaMap.removeLayer(m));measureLine=null;measureMarkers=[];firstPoint=null;measuring=false;measureBtn.textContent=&#x27;Mulai ukur 2 titik&#x27;;measureBtn.classList.add(&#x27;primary&#x27;);measureResult.textContent=&#x27;Garis pengukuran dihapus.&#x27;;});
+M.off(&#x27;click&#x27;);
+M.on(&#x27;click&#x27;,e=&gt;{
+ if(measuring){
+  if(!firstPoint){firstPoint=e.latlng;measureMarkers.push(L.circleMarker(firstPoint,{radius:6,color:&#x27;#fff&#x27;,weight:2,fillColor:&#x27;#163b32&#x27;,fillOpacity:1}).addTo(M));measureResult.textContent=&#x27;Titik pertama: &#x27;+firstPoint.lat.toFixed(5)+&#x27;, &#x27;+firstPoint.lng.toFixed(5)+&#x27;. Pilih titik kedua.&#x27;;measureBtn.textContent=&#x27;Pilih titik kedua…&#x27;;}
+  else{const second=e.latlng;measureMarkers.push(L.circleMarker(second,{radius:6,color:&#x27;#fff&#x27;,weight:2,fillColor:&#x27;#c46d22&#x27;,fillOpacity:1}).addTo(M));const km=M.distance(firstPoint,second)/1000;measureLine=L.polyline([firstPoint,second],{color:&#x27;#ffe34d&#x27;,weight:4,dashArray:&#x27;7 6&#x27;}).addTo(M);measureResult.innerHTML=&#x27;&lt;b&gt;Jarak garis lurus: &#x27;+km.toFixed(3)+&#x27; km&lt;/b&gt;&lt;br&gt;Titik 1: &#x27;+firstPoint.lat.toFixed(5)+&#x27;, &#x27;+firstPoint.lng.toFixed(5)+&#x27;&lt;br&gt;Titik 2: &#x27;+second.lat.toFixed(5)+&#x27;, &#x27;+second.lng.toFixed(5);measuring=false;firstPoint=null;measureBtn.textContent=&#x27;Ukur ulang&#x27;;measureBtn.classList.remove(&#x27;primary&#x27;);}
+ }else{const km=M.distance(e.latlng,gedongRef)/1000;L.popup().setLatLng(e.latlng).setContent(&#x27;&lt;b&gt;Lokasi yang dipilih&lt;/b&gt;&lt;br&gt;Koordinat: &#x27;+e.latlng.lat.toFixed(5)+&#x27;, &#x27;+e.latlng.lng.toFixed(5)+&#x27;&lt;br&gt;Jarak garis lurus dari Gedong Songo: &#x27;+km.toFixed(2)+&#x27; km&#x27;).openOn(M);}
+});
+applyFilters();
+// Keep Leaflet&#x27;s map sizing correct after the dashboard has been mounted.
+setTimeout(()=&gt;M.invalidateSize(),350);
+
+&lt;/script&gt;
+&lt;/html&gt;"></iframe>
+ <p class="small">Jarak pada peta merupakan jarak garis lurus; titik proksi dan tingkat keyakinannya mengikuti data awal. Peta bukan hasil survei lapangan terbaru.</p>
+</section>
+
+<section class="page" id="orc">
+ <div class="hero"><div class="eyebrow">Technical scenario simulator</div><h1>ORC Simulator</h1><p>Ubah kondisi fluida untuk menghitung panas termal, daya listrik bruto, dan daya bersih secara langsung. Nilai default mengikuti contoh ilustratif dalam materi ORCA awal.</p></div>
+ <div class="section grid2">
+  <div class="card"><div class="tabs"><button class="active" data-scenario="A">Scenario A • Bottoming</button><button data-scenario="B">Scenario B • Primary</button><button data-scenario="C">Custom</button></div>
+   <div class="fields">
+    <div class="field"><label for="tin">Temperatur masuk (°C)</label><input id="tin" type="number" min="1" max="350" step="1" value="170"></div>
+    <div class="field"><label for="tout">Temperatur keluar (°C)</label><input id="tout" type="number" min="0" max="300" step="1" value="140"></div>
+    <div class="field"><label for="flow">Debit massa (kg/s)</label><input id="flow" type="number" min="1" max="2000" step="1" value="260"></div>
+    <div class="field"><label for="cp">Panas jenis fluida (kJ/kg°C)</label><input id="cp" type="number" min=".1" max="10" step=".01" value="4.18"></div>
+    <div class="field"><label for="eff">Efisiensi ORC (%)</label><input id="eff" type="number" min="0" max="30" step=".1" value="9"></div>
+    <div class="field"><label for="parasitic">Parasitic load (%)</label><input id="parasitic" type="number" min="0" max="50" step=".1" value="5"></div>
+   </div>
+   <button class="btn" id="runORC">Hitung simulasi</button>
+   <p class="small">Cp default 4,18 kJ/kg°C adalah asumsi pendekatan untuk air cair. Ganti sesuai karakter fluida dan temperatur aktual.</p>
+  </div>
+  <div class="card"><h3>Hasil perhitungan</h3><div class="result"><div class="small">Daya listrik bersih estimasi</div><div class="big" id="netMW">2,79 MW</div><div class="small" id="scenarioLabel">Scenario A • Bottoming cycle</div></div>
+   <div class="result-grid"><div><b id="heatMW">32,60</b><span>Panas tersedia (MWth)</span></div><div><b id="grossMW">2,93</b><span>Daya bruto (MW)</span></div><div><b id="parasiticMW">0,15</b><span>Beban parasitik (MW)</span></div></div>
+   <div class="section"><h3>Neraca energi ringkas</h3><div class="chart-wrap"><canvas id="orcChart" aria-label="Grafik energi ORC"></canvas></div></div>
+   <div class="note" id="orcInterpret">Output merupakan screening termodinamika sederhana, bukan desain siklus ORC atau prediksi produksi pembangkit.</div>
+  </div>
+ </div>
+ <div class="section card"><h3>Perbandingan skenario awal</h3><table><thead><tr><th>Parameter</th><th>A • Bottoming</th><th>B • Primary</th></tr></thead><tbody><tr><td>Temperatur</td><td>170 → 140°C</td><td>150 → 70°C</td></tr><tr><td>Debit</td><td>260 kg/s</td><td>200–500 kg/s</td></tr><tr><td>Efisiensi net ilustratif</td><td>9%</td><td>7%</td></tr><tr><td>Peran</td><td>Memanfaatkan brine sisa</td><td>ORC sebagai siklus utama</td></tr><tr><td>Output contoh dalam materi awal</td><td>~3 MW</td><td>~5–12 MW</td></tr></tbody></table><p class="small">Perbandingan pada tabel adalah ilustrasi materi awal. Model interaktif menghitung ulang berdasarkan input dan efisiensi yang dimasukkan.</p></div>
+</section>
+
+<section class="page" id="cascade">
+ <div class="hero"><div class="eyebrow">Cascading utilization</div><h1>Heat Cascade Simulator</h1><p>Alokasikan panas secara berurutan untuk pembangkitan ORC, pengeringan kopi, dan cold chain. Ubah kebutuhan dan fraksi panas yang dapat dimanfaatkan untuk melihat sisa energi menuju reinjeksi.</p></div>
+ <div class="section grid2">
+  <div class="card"><h3>Parameter alokasi panas</h3>
+   <div class="field"><label for="availableHeat">Panas tersedia (MWth)</label><input id="availableHeat" type="number" min="0" max="500" step=".1" value="67"></div>
+   <div class="field"><label for="orcHeat">Panas dialokasikan ke ORC (MWth)</label><input id="orcHeat" type="number" min="0" max="500" step=".1" value="35"></div>
+   <div class="field"><label for="rejectUse">Fraksi panas buangan ORC yang dapat dipakai (%)</label><div class="range-row"><input class="range" id="rejectUse" type="range" min="0" max="100" value="35"><output id="rejectUseOut">35%</output></div></div>
+   <div class="field"><label for="coffeeNeed">Kebutuhan pengeringan kopi (MWth)</label><input id="coffeeNeed" type="number" min="0" max="20" step=".1" value=".6"></div>
+   <div class="field"><label for="coldNeed">Kebutuhan cold chain / utilitas (MWth)</label><input id="coldNeed" type="number" min="0" max="20" step=".1" value=".4"></div>
+   <button class="btn" id="runCascade">Hitung heat cascade</button>
+  </div>
+  <div class="card"><h3>Aliran energi hasil simulasi</h3><div class="result-grid"><div><b id="cascadeOrc">35,00</b><span>Input panas ORC (MWth)</span></div><div><b id="cascadeReject">22,75</b><span>Panas buangan ORC (MWth)</span></div><div><b id="cascadeRemain">31,00</b><span>Panas langsung tersisa (MWth)</span></div></div>
+   <div class="section" id="cascadeFlow"></div><div class="note" id="cascadeNote">Model alokasi konseptual. Kesesuaian temperatur, exchanger, jarak, dan kualitas panas harus diverifikasi.</div>
+  </div>
+ </div>
+ <div class="section card"><h3>Interpretasi penggunaan bertingkat</h3><div class="flow"><div class="step"><b>Reservoir / brine</b><span class="small">Sumber panas tersedia</span></div><div class="arrow">→</div><div class="step"><b>ORC</b><span class="small">Konversi sebagian panas ke listrik</span></div><div class="arrow">→</div><div class="step"><b>Pengeringan kopi</b><span class="small">Panas suhu sesuai proses</span></div><div class="arrow">→</div><div class="step"><b>Cold chain</b><span class="small">Melalui sistem konversi yang sesuai</span></div><div class="arrow">→</div><div class="step"><b>Reinjeksi</b><span class="small">Sesuai desain reservoir</span></div></div><p class="small">Catatan: cold chain tidak otomatis menggunakan panas secara langsung. Diperlukan absorption chiller atau konfigurasi konversi energi yang sesuai; kebutuhan listrik dan temperatur perlu dianalisis terpisah.</p></div>
+</section>
+
+<section class="page" id="economic">
+ <div class="hero"><div class="eyebrow">Project screening</div><h1>Economic Simulator</h1><p>Uji kelayakan awal dengan arus kas tahunan sederhana. Semua angka merupakan asumsi yang dapat diubah, bukan penawaran biaya atau studi kelayakan final.</p></div>
+ <div class="section grid2">
+  <div class="card"><h3>Asumsi teknis dan finansial</h3><div class="fields">
+   <div class="field"><label for="econMW">Kapasitas ORC bersih (MW)</label><input id="econMW" type="number" min=".01" max="100" step=".1" value="3"></div>
+   <div class="field"><label for="capexKW">CAPEX ORC (US$/kW)</label><input id="capexKW" type="number" min="100" max="20000" step="50" value="3500"></div>
+   <div class="field"><label for="cascadeCapex">CAPEX heat cascade (US$)</label><input id="cascadeCapex" type="number" min="0" max="100000000" step="10000" value="900000"></div>
+   <div class="field"><label for="opexPct">OPEX tahunan (% total CAPEX)</label><input id="opexPct" type="number" min="0" max="30" step=".1" value="3"></div>
+   <div class="field"><label for="tariff">Harga jual listrik (US$/MWh)</label><input id="tariff" type="number" min="0" max="1000" step="1" value="100"></div>
+   <div class="field"><label for="cf">Capacity factor (%)</label><input id="cf" type="number" min="0" max="100" step="1" value="90"></div>
+   <div class="field"><label for="life">Umur proyek (tahun)</label><input id="life" type="number" min="1" max="40" step="1" value="25"></div>
+   <div class="field"><label for="discount">Discount rate (%)</label><input id="discount" type="number" min="0" max="40" step=".1" value="10"></div>
+   <div class="field"><label for="cascadeBenefit">Manfaat bersih cascade / tahun (US$)</label><input id="cascadeBenefit" type="number" min="0" max="10000000" step="10000" value="250000"></div>
+  </div><button class="btn" id="runEcon">Hitung keekonomian</button></div>
+  <div class="card"><h3>Indikator hasil</h3><div class="result"><div class="small">Net Present Value (NPV)</div><div class="big" id="npv">$0</div><div class="small" id="econVerdict">Menunggu perhitungan</div></div>
+   <div class="result-grid"><div><b id="irr">—</b><span>IRR indikatif</span></div><div><b id="payback">—</b><span>Simple payback</span></div><div><b id="annualEnergy">—</b><span>Produksi (MWh/tahun)</span></div></div>
+   <div class="section"><h3>Arus kas kumulatif</h3><div class="chart-wrap"><canvas id="cashChart"></canvas></div></div>
+  </div>
+ </div>
+ <div class="section card"><h3>Struktur perhitungan</h3><table><tbody><tr><th>Komponen</th><th>Formula screening</th></tr><tr><td>Produksi tahunan</td><td>Kapasitas bersih × 8.760 jam × capacity factor</td></tr><tr><td>Pendapatan listrik</td><td>Produksi tahunan × tarif listrik</td></tr><tr><td>Arus kas operasi</td><td>Pendapatan listrik + manfaat cascade − OPEX</td></tr><tr><td>NPV</td><td>−CAPEX + Σ arus kas tahun ke-t / (1 + discount rate)^t</td></tr><tr><td>IRR</td><td>Tingkat diskonto yang membuat NPV = 0 (pencarian numerik)</td></tr></tbody></table><p class="small">Model belum memasukkan pajak, depresiasi, eskalasi tarif, degradasi produksi, biaya pembiayaan, replacement, decommissioning, atau struktur kontrak. IRR bisa tidak terdefinisi untuk arus kas yang tidak menghasilkan akar.</p></div>
+</section>
+
+<section class="page" id="risk">
+ <div class="hero"><div class="eyebrow">Uncertainty analysis</div><h1>Risk Simulator</h1><p>Monte Carlo menguji sebaran NPV dari rentang input teknis dan biaya. Simulasi dilakukan lokal di browser, tanpa mengirim data ke server.</p></div>
+ <div class="section grid2">
+  <div class="card"><h3>Rentang ketidakpastian</h3>
+   <div class="field"><label for="mcTempMin">Temperatur efektif minimum (°C)</label><input id="mcTempMin" type="number" value="150"></div><div class="field"><label for="mcTempMax">Temperatur efektif maksimum (°C)</label><input id="mcTempMax" type="number" value="220"></div>
+   <div class="field"><label for="mcFlowMin">Debit minimum (kg/s)</label><input id="mcFlowMin" type="number" value="200"></div><div class="field"><label for="mcFlowMax">Debit maksimum (kg/s)</label><input id="mcFlowMax" type="number" value="500"></div>
+   <div class="field"><label for="mcEffMin">Efisiensi minimum (%)</label><input id="mcEffMin" type="number" step=".1" value="6"></div><div class="field"><label for="mcEffMax">Efisiensi maksimum (%)</label><input id="mcEffMax" type="number" step=".1" value="10"></div>
+   <div class="field"><label for="mcCapexMin">CAPEX minimum (US$/kW)</label><input id="mcCapexMin" type="number" value="2500"></div><div class="field"><label for="mcCapexMax">CAPEX maksimum (US$/kW)</label><input id="mcCapexMax" type="number" value="5000"></div>
+   <div class="field"><label for="mcCFMin">Capacity factor minimum (%)</label><input id="mcCFMin" type="number" value="70"></div><div class="field"><label for="mcCFMax">Capacity factor maksimum (%)</label><input id="mcCFMax" type="number" value="95"></div>
+   <button class="btn" id="runMC">Jalankan 1.000 iterasi</button><p class="small">Untuk screening, setiap variabel diambil dari distribusi uniform dalam rentang yang ditentukan. Model mengasumsikan temperatur efektif sebagai ΔT, Cp = 4,18 kJ/kg°C, dan parasitic load 5%.</p>
+  </div>
+  <div class="card"><h3>Hasil Monte Carlo</h3><div class="result"><div class="small">Probabilitas NPV positif</div><div class="big" id="probNPV">—</div><div class="small" id="mcStatus">Jalankan simulasi untuk melihat hasil.</div></div>
+   <div class="result-grid"><div><b id="p10">—</b><span>P10 NPV</span></div><div><b id="p50">—</b><span>Median NPV</span></div><div><b id="p90">—</b><span>P90 NPV</span></div></div>
+   <div class="section"><h3>Distribusi NPV</h3><div class="chart-wrap"><canvas id="mcChart"></canvas></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="page" id="community">
+ <div class="hero"><div class="eyebrow">Community • Youth driven</div><h1>Proyek energi yang juga dimiliki warga</h1><p>Penerimaan sosial ditempatkan sebagai bagian dari desain, bukan tahap komunikasi setelah proyek jadi.</p></div>
+ <div class="section grid">
+  <div class="card"><span class="tag">01</span><h3>Operator & teknisi muda</h3><p>Mahasiswa geologi, teknik, dan bidang relevan dapat dilibatkan dalam pengumpulan data, pemetaan, dokumentasi, serta dukungan pemantauan non-kritis di bawah supervisi ahli.</p></div>
+  <div class="card"><span class="tag">02</span><h3>Pemantau lingkungan warga</h3><p>Pemuda dapat membantu pencatatan suhu, pH, dan debit mata air dengan prosedur sederhana, pelatihan, dan validasi laboratorium/tenaga kompeten.</p></div>
+  <div class="card"><span class="tag">03</span><h3>Pengelola usaha lokal</h3><p>Unit pengeringan dan penyimpanan dapat dikaji untuk dikelola melalui BUMDes atau koperasi sebagai usaha pascapanen.</p></div>
+ </div>
+ <div class="section card"><h3>Pembagian peran yang diusulkan</h3><table><thead><tr><th>Aktor</th><th>Peran</th></tr></thead><tbody><tr><td>Pengembang / operator PLTP</td><td>Eksplorasi, pembangkitan, keselamatan, dan pengelolaan reservoir.</td></tr><tr><td>Pemerintah daerah</td><td>Perizinan, pengawasan, fasilitasi dan koordinasi pemangku kepentingan.</td></tr><tr><td>BUMDes / koperasi</td><td>Pengelolaan pemanfaatan langsung dan pembagian manfaat.</td></tr><tr><td>Perguruan tinggi</td><td>Riset, pelatihan, validasi data, dan supervisi mahasiswa.</td></tr><tr><td>Mahasiswa / pemuda desa</td><td>Pemetaan, survei sosial, dokumentasi, pemantauan awal, operator setelah pelatihan.</td></tr><tr><td>Warga / kelompok tani</td><td>Identifikasi kebutuhan, pengelolaan usaha, evaluasi manfaat dan pengaduan.</td></tr></tbody></table></div>
+ <div class="section grid2"><div class="card"><h3>Transparansi lingkungan</h3><p>Data air, mata air, dan lingkungan perlu dipantau secara terbuka dengan metode dan pihak pemeriksa yang disepakati.</p></div><div class="card"><h3>Mekanisme pengaduan</h3><p>Konsultasi sejak perencanaan, pencatatan keluhan, tenggat respons, dan umpan balik perlu ditetapkan sebelum implementasi.</p></div></div>
+</section>
+
+<section class="page" id="about">
+ <div class="hero"><div class="eyebrow">Methodology & limitations</div><h1>Metodologi dan batasan</h1><p>ORCA adalah alat eksplorasi konsep dan screening awal. Simulasi tidak menggantikan studi reservoir, desain proses, kajian lingkungan, maupun studi kelayakan bankable.</p></div>
+ <div class="section grid2">
+  <div class="card"><h3>Asumsi teknis</h3><p>Perhitungan panas menggunakan Q = ṁ × Cp × ΔT. Daya listrik diperkirakan dari panas termal dikalikan efisiensi ORC, kemudian dikurangi parasitic load. Model tidak menyelesaikan siklus termodinamika, pinch analysis, atau karakteristik fluida kerja.</p></div>
+  <div class="card"><h3>Asumsi ekonomi</h3><p>NPV dan IRR memakai arus kas tahunan sederhana. Pajak, pembiayaan, inflasi, eskalasi tarif, degradasi, dan risiko konstruksi belum dimodelkan. Nilai CAPEX, OPEX, dan tarif harus diganti dengan data proyek.</p></div>
+  <div class="card"><h3>Asumsi spasial</h3><p>Lokasi kelompok tani dan proksi mengikuti peta awal. Jarak yang ditampilkan adalah jarak garis lurus, bukan waktu tempuh atau rute pipa. Lokasi dan kebutuhan energi wajib diverifikasi lapangan.</p></div>
+  <div class="card"><h3>Asumsi Monte Carlo</h3><p>Variabel disampel secara uniform dan independen. Korelasi antara temperatur, debit, efisiensi, CAPEX, dan capacity factor belum dimasukkan. Distribusi output bukan probabilitas keberhasilan proyek yang tervalidasi.</p></div>
+ </div>
+ <div class="section note"><b>Peringatan penggunaan:</b> Estimasi temperatur reservoir Ungaran pada materi awal disebut belum dibuktikan pengeboran. Jangan menafsirkan angka simulasi sebagai cadangan terbukti, jaminan daya, rekomendasi investasi, atau persetujuan lingkungan.</div>
+</section>
+</main>
+<footer class="footer">ORCA • Organic Rankine Cycle Application • Studi kasus panas bumi Ungaran. Seluruh kalkulasi berjalan di browser. Nilai teknis dan ekonomi adalah skenario ilustratif dan tidak dimaksudkan sebagai studi kelayakan final.</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const num=id=>{const v=parseFloat($(id).value);return Number.isFinite(v)?v:0};
+const fmt=(v,d=2)=>Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const money=v=> (v<0?'−':'')+'$'+Math.abs(v).toLocaleString('en-US',{maximumFractionDigits:0});
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='spatial'){const f=document.querySelector('.map-frame');setTimeout(()=>{try{f.contentWindow.dispatchEvent(new Event('resize'))}catch(e){}},300)}}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.go)));
+
+function drawBars(canvasId,items){const c=$(canvasId);if(!c)return;const w=c.clientWidth||500,h=220,dpr=window.devicePixelRatio||1;c.width=w*dpr;c.height=h*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);x.clearRect(0,0,w,h);const max=Math.max(1,...items.map(a=>Math.abs(a.v)));const left=12,base=h-30,barW=Math.max(22,(w-24)/items.length*.55),gap=(w-24)/items.length;x.font='11px Arial';items.forEach((a,i)=>{const bh=Math.abs(a.v)/max*145,xx=left+i*gap+(gap-barW)/2;x.fillStyle=a.color||'#245846';x.fillRect(xx,base-bh,barW,bh);x.fillStyle='#53645a';x.textAlign='center';x.fillText(a.label,xx+barW/2,h-10);x.fillStyle='#163b32';x.fillText(a.text||fmt(a.v,1),xx+barW/2,Math.max(12,base-bh-7))})}
+function orcCalc(){const tin=num('tin'),tout=num('tout'),flow=num('flow'),cp=num('cp'),eff=num('eff')/100,par=num('parasitic')/100;const dt=tin-tout;if(dt<0||flow<0||cp<0||eff<0||eff>1||par<0||par>=1){$('orcInterpret').textContent='Periksa input: temperatur masuk harus lebih tinggi dari temperatur keluar; efisiensi dan parasitic load harus berada dalam rentang valid.';return}
+ const q=flow*cp*dt/1000,gross=q*eff,parMW=gross*par,net=gross-parMW;
+ $('netMW').textContent=fmt(net)+' MW';$('heatMW').textContent=fmt(q);$('grossMW').textContent=fmt(gross);$('parasiticMW').textContent=fmt(parMW);
+ $('scenarioLabel').textContent=`ΔT ${fmt(dt,1)}°C • efisiensi ${fmt(eff*100,1)}% • parasitic ${fmt(par*100,1)}%`;
+ $('orcInterpret').textContent=net>0?`Dengan input ini, estimasi daya bersih ${fmt(net)} MW. Nilai belum memperhitungkan batas temperatur pinch, tekanan, karakter fluida kerja, pompa, turbin, dan desain heat exchanger.`:'Tidak ada daya bersih positif pada input saat ini.';
+ drawBars('orcChart',[{label:'Panas',v:q,text:fmt(q,1)+' MWth',color:'#c46d22'},{label:'Bruto',v:gross,text:fmt(gross,2)+' MW'},{label:'Bersih',v:net,text:fmt(net,2)+' MW',color:'#397b60'}]);
+}
+const presets={A:{tin:170,tout:140,flow:260,eff:9,parasitic:5,label:'Scenario A • Bottoming cycle'},B:{tin:150,tout:70,flow:350,eff:7,parasitic:7,label:'Scenario B • Primary ORC'}};
+document.querySelectorAll('[data-scenario]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-scenario]').forEach(x=>x.classList.toggle('active',x===b));const p=presets[b.dataset.scenario];if(p){Object.keys(p).filter(k=>$(k)).forEach(k=>$(k).value=p[k]);}orcCalc()}));
+['tin','tout','flow','cp','eff','parasitic'].forEach(id=>$(id).addEventListener('input',orcCalc));$('runORC').addEventListener('click',orcCalc);
+
+function cascadeCalc(){const available=Math.max(0,num('availableHeat')),orc=Math.max(0,num('orcHeat')),fraction=Math.max(0,Math.min(100,num('rejectUse')))/100,coffee=Math.max(0,num('coffeeNeed')),cold=Math.max(0,num('coldNeed'));const orcUsed=Math.min(available,orc),reject=orcUsed*fraction,remaining=Math.max(0,available-orcUsed),pool=remaining+reject,coffeeUsed=Math.min(pool,coffee),afterCoffee=pool-coffeeUsed,coldUsed=Math.min(afterCoffee,cold),reinjection=Math.max(0,available-orcUsed)+(reject-coffeeUsed-coldUsed);$('cascadeOrc').textContent=fmt(orcUsed);$('cascadeReject').textContent=fmt(reject);$('cascadeRemain').textContent=fmt(remaining);$('rejectUseOut').textContent=fmt(fraction*100,0)+'%';
+ const steps=[['Panas tersedia',available],['Input panas ORC',orcUsed],['Pool panas tahap lanjut',pool],['Pengeringan kopi',coffeeUsed],['Cold chain',coldUsed],['Sisa menuju reinjeksi*',reinjection]];
+ $('cascadeFlow').innerHTML=steps.map((s,i)=>`<div style="margin:9px 0"><div class="range-row"><b style="font-size:12px;color:#315747">${s[0]}</b><b>${fmt(s[1])} MWth</b></div><div class="barline"><span style="width:${available?Math.min(100,s[1]/available*100):0}%"></span></div></div>`).join('');
+ $('cascadeNote').textContent=orc>available?'Input panas ORC melebihi panas tersedia; nilai ORC dibatasi sebesar panas yang tersedia. *Sisa reinjeksi merupakan neraca konseptual, bukan estimasi termal reinjeksi aktual.':'Alokasi dihitung secara berurutan dan dibatasi oleh energi yang tersedia. *Sisa menuju reinjeksi bersifat konseptual; panas buangan ORC hanya dihitung sebesar fraksi yang dinyatakan dapat digunakan.'}
+['availableHeat','orcHeat','rejectUse','coffeeNeed','coldNeed'].forEach(id=>$(id).addEventListener('input',cascadeCalc));$('runCascade').addEventListener('click',cascadeCalc);
+
+function econModel(capacity,capexKW,cascadeCapex,opexPct,tariff,cf,life,discount,cascadeBenefit){const capex=capacity*1000*capexKW+cascadeCapex,energy=capacity*8760*cf/100,annualRevenue=energy*tariff+cascadeBenefit,opex=capex*opexPct/100,annualCF=annualRevenue-opex,r=discount/100;let npv=-capex,cum=-capex,payback=null,flows=[-capex],cumFlows=[cum];for(let t=1;t<=life;t++){npv+=annualCF/Math.pow(1+r,t);cum+=annualCF;flows.push(annualCF);cumFlows.push(cum);if(payback===null&&cum>=0&&annualCF>0)payback=t-1+(-cumFlows[t-1])/annualCF}
+ let irr=null;if(annualCF>0){let lo=-.9,hi=3;for(let i=0;i<120;i++){let mid=(lo+hi)/2,val=-capex;for(let t=1;t<=life;t++)val+=annualCF/Math.pow(1+mid,t);if(val>0)lo=mid;else hi=mid}irr=(lo+hi)/2}
+ return{capex,energy,annualRevenue,opex,annualCF,npv,payback,irr,flows,cumFlows}}
+function econInputs(){return {capacity:num('econMW'),capexKW:num('capexKW'),cascadeCapex:num('cascadeCapex'),opexPct:num('opexPct'),tariff:num('tariff'),cf:num('cf'),life:Math.max(1,Math.floor(num('life'))),discount:num('discount'),cascadeBenefit:num('cascadeBenefit')}}
+let lastEcon=null;
+function econCalc(){const a=econInputs();if(a.capacity<=0||a.life<1||a.discount<0||a.discount>=100){$('econVerdict').textContent='Periksa input ekonomi.';return}const r=econModel(...Object.values(a));lastEcon=r;$('npv').textContent=money(r.npv);$('npv').className='big '+(r.npv>=0?'positive':'negative');$('econVerdict').textContent=r.npv>=0?'NPV positif pada asumsi yang dimasukkan.':'NPV negatif pada asumsi yang dimasukkan.';$('irr').textContent=r.irr===null?'Tidak terdefinisi':fmt(r.irr*100,1)+'%';$('payback').textContent=r.payback===null?'Tidak tercapai':fmt(r.payback,1)+' th';$('annualEnergy').textContent=fmt(r.energy,0)+' MWh';drawBars('cashChart',r.cumFlows.map((v,i)=>({label:i===0?'Awal':`T${i}`,v,text:money(v),color:v>=0?'#397b60':'#bd702f'})).filter((v,i)=>i===0||i===1||i===Math.ceil(a.life/3)||i===Math.ceil(a.life*2/3)||i===a.life))}
+$('runEcon').addEventListener('click',econCalc);['econMW','capexKW','cascadeCapex','opexPct','tariff','cf','life','discount','cascadeBenefit'].forEach(id=>$(id).addEventListener('input',econCalc));
+
+function quantile(sorted,q){return sorted[Math.min(sorted.length-1,Math.max(0,Math.floor(q*(sorted.length-1))))]}
+function mcCalc(){const ids=['mcTempMin','mcTempMax','mcFlowMin','mcFlowMax','mcEffMin','mcEffMax','mcCapexMin','mcCapexMax','mcCFMin','mcCFMax'];const v=Object.fromEntries(ids.map(id=>[id,num(id)]));if(v.mcTempMax<=v.mcTempMin||v.mcFlowMax<=v.mcFlowMin||v.mcEffMax<=v.mcEffMin||v.mcCapexMax<=v.mcCapexMin||v.mcCFMax<=v.mcCFMin){$('mcStatus').textContent='Rentang maksimum harus lebih besar dari minimum.';return}
+ const econ=econInputs(),vals=[];for(let i=0;i<1000;i++){const temp=v.mcTempMin+Math.random()*(v.mcTempMax-v.mcTempMin),flow=v.mcFlowMin+Math.random()*(v.mcFlowMax-v.mcFlowMin),eff=(v.mcEffMin+Math.random()*(v.mcEffMax-v.mcEffMin))/100,capexKW=v.mcCapexMin+Math.random()*(v.mcCapexMax-v.mcCapexMin),cf=v.mcCFMin+Math.random()*(v.mcCFMax-v.mcCFMin);
+ const gross=flow*4.18*temp/1000*eff,net=gross*.95,capacity=Math.max(.01,net),model=econModel(capacity,capexKW,econ.cascadeCapex,econ.opexPct,econ.tariff,cf,econ.life,econ.discount,econ.cascadeBenefit);vals.push(model.npv)}
+ vals.sort((a,b)=>a-b);const positive=vals.filter(x=>x>0).length/vals.length;$('probNPV').textContent=fmt(positive*100,1)+'%';$('mcStatus').textContent='1.000 iterasi selesai • input disampling uniform dan independen.';$('p10').textContent=money(quantile(vals,.1));$('p50').textContent=money(quantile(vals,.5));$('p90').textContent=money(quantile(vals,.9));
+ const min=vals[0],max=vals[vals.length-1],bins=14,counts=Array(bins).fill(0);vals.forEach(x=>{const idx=max===min?0:Math.min(bins-1,Math.floor((x-min)/(max-min)*bins));counts[idx]++});drawBars('mcChart',counts.map((n,i)=>({label:`B${i+1}`,v:n,text:String(n),color:i<bins/2?'#bd702f':'#397b60'})))}
+$('runMC').addEventListener('click',mcCalc);
+window.addEventListener('resize',()=>{orcCalc();if(lastEcon)econCalc()});
+orcCalc();cascadeCalc();econCalc();
+</script>
+</body></html>
